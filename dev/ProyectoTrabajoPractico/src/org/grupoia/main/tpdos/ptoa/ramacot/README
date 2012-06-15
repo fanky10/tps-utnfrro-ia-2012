@@ -1,0 +1,17 @@
+Problema del viajante:
+Dado un punto de inicio y un pto de fin. Encontrar la mejor ruta (la mas corta)
+
+Posibles soluciones:
+
+- Ramificacion y Acotacion
+Algortmo:
+Deja de explorar una ruta tan pronto como su distancia total, hasta ese momento, sea mayor que la que se ha marcado como la mas corta.
+
+- Primero en anchura
+Algoritmo:
+En este metodo se evalúa cada nodo del mismo nivel antes de proceder al proceder al siguiente nivel mas profundo.
+
+- Primero en profundidad
+Algoritmo:
+Se explora c/camino posible hacia el objetivo hasta su conclusion, antes de intentar otro camino.
+

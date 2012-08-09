@@ -17,7 +17,7 @@ public class BaseTest {
         algor.printVisited();
         assertTrue(encontrado!=null);
     }
-    protected void testBuscaObjetivoIvalido(AlgoritmoSolucion algor, Raiz r, NodoArbol objetivo) {
+    protected void testBuscaObjetivoInvalido(AlgoritmoSolucion algor, Raiz r, NodoArbol objetivo) {
         NodoArbol encontrado = algor.buscarObjetivo(r, objetivo);
         algor.printVisited();
         assertTrue(encontrado==null);

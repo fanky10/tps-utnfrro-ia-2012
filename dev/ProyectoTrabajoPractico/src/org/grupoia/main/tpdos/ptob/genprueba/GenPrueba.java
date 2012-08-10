@@ -1,4 +1,4 @@
-package org.grupoia.main.tpdos.ptob.erik;
+package org.grupoia.main.tpdos.ptob.genprueba;
 
 import java.awt.Color;
 
@@ -9,41 +9,25 @@ public class GenPrueba {
     public static void main(String[] args) {
         
         Dados dados = new Dados();
-        
-        Dado da = new Dado();
-        da.setColor(Color.yellow);
-        dados.add(da);
-        
-        da = new Dado();
-        da.setColor(Color.red);
-        dados.add(da);
-        
-        da = new Dado();
-        da.setColor(Color.BLUE);
-        dados.add(da);
-        
-        da = new Dado();
-        da.setColor(Color.BLACK);
-        dados.add(da);
+        dados.add(new Dado());
+        dados.add(new Dado());
+        dados.add(new Dado());
         
         boolean finalizo = false;
         //generar una posible solucion
         //configurar dados
         //verificar si el objetivo se cumplió
         //si no verifica, cambiar configuracion
-        do {
-            
-            if (dados.verificaConfig())
-            {
-                finalizo = true;
-                
-            }
-            else
-            {
+        int i = 0;
+        while(finalizo || i<20){
+            finalizo = dados.verificaConfig();
+            if (!finalizo){
                 dados.cambiaConfig();
+                System.out.println("nueva config:"+dados);
             }
             
-        } while (!finalizo);
+            i++;
+        }
         
         
         

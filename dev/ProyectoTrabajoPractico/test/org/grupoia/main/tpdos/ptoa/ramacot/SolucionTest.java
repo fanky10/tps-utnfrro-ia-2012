@@ -4,6 +4,7 @@
  */
 package org.grupoia.main.tpdos.ptoa.ramacot;
 
+import org.grupoia.main.tpdos.common.Raiz;
 import org.grupoia.main.mockedobjects.MockedArbol;
 import org.junit.Test;
 

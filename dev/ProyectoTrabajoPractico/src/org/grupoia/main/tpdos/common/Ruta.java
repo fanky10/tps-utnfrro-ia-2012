@@ -2,7 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.grupoia.main.tpdos.ptoa.ramacot;
+package org.grupoia.main.tpdos.common;
+
+import org.grupoia.main.tpdos.common.NodoArbol;
 
 
 

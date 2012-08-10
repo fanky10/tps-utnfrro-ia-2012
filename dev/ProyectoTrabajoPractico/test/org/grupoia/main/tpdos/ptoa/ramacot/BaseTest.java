@@ -4,6 +4,8 @@
  */
 package org.grupoia.main.tpdos.ptoa.ramacot;
 
+import org.grupoia.main.tpdos.common.NodoArbol;
+import org.grupoia.main.tpdos.common.Raiz;
 import static org.junit.Assert.assertTrue;
 
 /**

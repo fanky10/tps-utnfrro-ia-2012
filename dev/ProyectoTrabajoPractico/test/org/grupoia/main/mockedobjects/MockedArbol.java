@@ -6,10 +6,10 @@ package org.grupoia.main.mockedobjects;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.grupoia.main.tpdos.ptoa.ramacot.Hoja;
-import org.grupoia.main.tpdos.ptoa.ramacot.NodoArbol;
-import org.grupoia.main.tpdos.ptoa.ramacot.Raiz;
-import org.grupoia.main.tpdos.ptoa.ramacot.Rama;
+import org.grupoia.main.tpdos.common.Hoja;
+import org.grupoia.main.tpdos.common.NodoArbol;
+import org.grupoia.main.tpdos.common.Raiz;
+import org.grupoia.main.tpdos.common.Rama;
 
 /**
  *

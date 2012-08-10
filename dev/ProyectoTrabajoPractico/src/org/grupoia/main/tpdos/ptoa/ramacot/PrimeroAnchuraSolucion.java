@@ -4,6 +4,8 @@
  */
 package org.grupoia.main.tpdos.ptoa.ramacot;
 
+import org.grupoia.main.tpdos.common.NodoArbol;
+
 /**
  * En este metodo se evalúa cada nodo del mismo nivel antes de proceder al proceder al siguiente nivel mas profundo.
  * @author Fanky10 <fanky10@gmail.com>

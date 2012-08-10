@@ -4,6 +4,8 @@
  */
 package org.grupoia.main.tpdos.ptoa.ramacot;
 
+import org.grupoia.main.tpdos.common.NodoArbol;
+
 /**
  * Se explora c/camino posible hacia el objetivo hasta su conclusion, antes de intentar otro camino.
  * @author Fanky10 <fanky10@gmail.com>

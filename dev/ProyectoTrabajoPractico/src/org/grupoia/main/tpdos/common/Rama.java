@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.grupoia.main.tpdos.ptoa.ramacot;
+package org.grupoia.main.tpdos.common;
 
 import java.util.List;
 
@@ -10,8 +10,8 @@ import java.util.List;
  *
  * @author Fanky10 <fanky10@gmail.com>
  */
-public class Raiz extends NodoArbol{
-    public Raiz(List<NodoArbol> nodosHijos){
-        super(nodosHijos);
+public class Rama extends NodoArbol{
+    public Rama(Integer value,List<NodoArbol> nodosHijos){
+        super(value,nodosHijos);
     }
 }

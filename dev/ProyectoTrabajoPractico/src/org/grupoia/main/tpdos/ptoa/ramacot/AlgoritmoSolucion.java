@@ -4,6 +4,7 @@
  */
 package org.grupoia.main.tpdos.ptoa.ramacot;
 
+import org.grupoia.main.tpdos.common.NodoArbol;
 import java.util.ArrayList;
 import java.util.List;
 

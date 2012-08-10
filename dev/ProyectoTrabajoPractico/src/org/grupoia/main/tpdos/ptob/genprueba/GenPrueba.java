@@ -18,15 +18,12 @@ public class GenPrueba {
         //configurar dados
         //verificar si el objetivo se cumplió
         //si no verifica, cambiar configuracion
-        int i = 0;
-        while(finalizo || i<20){
+        while(!finalizo){
             finalizo = dados.verificaConfig();
             if (!finalizo){
                 dados.cambiaConfig();
                 System.out.println("nueva config:"+dados);
             }
-            
-            i++;
         }
         
         

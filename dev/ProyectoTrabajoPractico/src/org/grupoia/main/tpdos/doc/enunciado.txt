@@ -1,0 +1,80 @@
+Punto A)
+1- Explosion Combinatoria 
+
+Ejercicio:
+Un arqueólogo debe recorrer 5 sitios clave para llevar acabo una investigacion sobre restos fósiles de Dinosaurios de Argentina. 
+Estos sitios son: Trelew, San Martin de los Andes, Purmamarca, Valle de la Luna y Lago Escondido.
+Al no decidirse sobre cual es el orden que le convendria seguir el recorrido, piensa que es una buena idea medida describir
+todas las posibles combinaciones diferentes y finalmente elegir una de ellas con los ojos cerrados.
+Desarrollar un programa que permita ingresar un número variable de sitios a visitar (entre 2 y 8) y muestre 
+en pantallal todos los posibles circuitos que podría definir.
+
+
+2- Ramificación y Acotacion 
+Algortmo:
+Deja de explorar una ruta tan pronto como su distancia total, hasta ese momento, sea mayor que la que se ha marcado como la mas corta.
+
+Ejercicio:
+Un viajante de comercio interestelar debe recorrer 4 estrellas, cada una de las cuales debe visitar exactamente una vez.
+Existen rutas directas entre cada pareja de estrellas a visitar y sus distancias se expresan en años luz.
+Se desea encontrar la ruta más corta posible que debe seruir el vendedor que empiece y termine en alguna de las siguientes estrellas.
+
+Canopus - Aldebarán - Sirio - Betelgeuse
+
+3- Búsqueda primero en anchura 
+Algoritmo:
+En este metodo se evalúa cada nodo del mismo nivel antes de proceder al proceder al siguiente nivel mas profundo.
+
+4- Búsqueda primero en profundidad 
+Algoritmo:
+Se explora c/camino posible hacia el objetivo hasta su conclusion, antes de intentar otro camino.
+
+Ejercicio:
+Desarrollar dos programas que resuelvan el problema de las jarras de agua, utilizando las estrategias de búsqueda primero en anchura y
+primero en profundidad.
+
+Para los ptos: 2~4 pensar la GUI mas adecuada
+
+Punto B)
+1- Generación y prueba
+Algoritmo:
+1- Generar una posible solución. Para algunos problemas, esto significa generar un objetivo particular en el espacio problema.
+Para otros, supone más bien generar un camino a partir de un camino inicial.
+2- Verificar si realmente el objetivo elegido es una solución comparándolo con el objetivo final o comparando el camino elegido 
+con el conjunto de estados objetivo aceptables.
+3- Si se ha encontrado la solucion, terminar. Si no, volver al paso 1.
+
+Ejercicio:
+Desarrollar un programa que considere el problema de acomodar cuatro cubos de 6 caras, cada una de las cuales se encuentra pintada
+con un color distinto, de manera tal que una solución a este problema consiste en disponer los cubos en una fila de forma que el bloque muestre
+una cara de cada color. Utilizar una estrategia de generación y prueba que evalúe la cantidad de caras de un mismo color que hay a la vista
+y trate de reducirlas modificando un cubo a la vez.
+
+2- Escalada o Remonte de Colinas
+Algoritmo Escalada Simple:
+1- Evaluar el estado inicial. Si también estado objetivo, devolverlo y terminar. En caso contrario, continuar con el estado inicial
+como estado actual.
+2- Repetir hasta que se encuentre una solución o hasta que no queden nuevos operadores que aplicar al estado actual:
+    a- Seleccionar un operador que no haya sido aplicado con anterioridad al estado actual y aplicarlo para generar un nuevo estado.
+    b- Evaluar el nuevo estado
+        I- Si es un estado objetivo, devolverlo y terminar.
+        II- Si no es un estado objetivo, pero es mejor que el estado actual, convertirlo en estado actual.
+        III- Si no es mejor que el estado actual, continuar bucle.
+
+Ejercicio:
+Suponga que se encuentra en una ciudad desconocida sin ningún mapa, y que quiere llegar al centro. Usted simplemente
+iría hacia los rascacielos. La función heurística sería en este caso la distancia existente entre su posición 
+y los rascacielos y los estados deseables son aquellos que esa distancia se minimiza.
+
+Desde una posición al objetivo, avanzar de a un paso y valorar. Si no es mejor, volver atrás a buscar otro.
+
+3- Búsqueda El primero mejor
+Algoritmo:
+1- Comenzar con ABIERTOS conteniendo solo el estado inicial.
+2- Hasta que se llegue a un objetivo o no queden nodos en ABIERTOS hacer:
+    a- Tomar el mejor nodo de ABIERTOS
+    b- Generar sus sucesores
+    c- Para cada sucesor:
+        i- Si no se ha generado con anterioridad, evaluarlo y añadirlo a ABIERTOS y almacenar su padre
+        ii- Si ya se ha generado antes, cambiar al padre si el nuevo camino es mejor que el anterior. 
+            En este caso, se actualiza el coste empleado para alcanzar el nodo y a los sucesores que pudiera tener.

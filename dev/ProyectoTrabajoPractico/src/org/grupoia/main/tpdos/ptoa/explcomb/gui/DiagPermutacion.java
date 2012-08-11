@@ -41,7 +41,7 @@ public class DiagPermutacion extends javax.swing.JDialog {
     private void agregarCiudad() {
         //checkear entre 2 y 8 para ejecutar algoritmo y actualizar tabla
         String ciudad = txtCiudad.getText();
-        if (ciudad != null && !ciudad.isEmpty() && ciudades.size() <= 8) {
+        if (ciudad != null && !ciudad.isEmpty() && ciudades.size() < 8) {
             ciudades.add(ciudad);
             actualizarLista();
             if (ciudades.size() > 1) {// si hay menos de una que mostramos? jeje

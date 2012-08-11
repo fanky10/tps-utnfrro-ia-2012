@@ -3,146 +3,155 @@ package org.grupoia.main.tpdos.ptoa.explcomb;
 //--------------------------------------
 //Systematically generate permutations. 
 //--------------------------------------
-
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PermutationGenerator {
 
-	private int[] a;
-	private BigInteger numLeft;
-	private BigInteger total;
+    private int[] a;
+    private BigInteger numLeft;
+    private BigInteger total;
 
-	// -----------------------------------------------------------
-	// Constructor. WARNING: Don't make n too large.
-	// Recall that the number of permutations is n!
-	// which can be very large, even when n is as small as 20 --
-	// 20! = 2,432,902,008,176,640,000 and
-	// 21! is too big to fit into a Java long, which is
-	// why we use BigInteger instead.
-	// ----------------------------------------------------------
+    // -----------------------------------------------------------
+    // Constructor. WARNING: Don't make n too large.
+    // Recall that the number of permutations is n!
+    // which can be very large, even when n is as small as 20 --
+    // 20! = 2,432,902,008,176,640,000 and
+    // 21! is too big to fit into a Java long, which is
+    // why we use BigInteger instead.
+    // ----------------------------------------------------------
+    public PermutationGenerator(int n) {
+        if (n < 1) {
+            throw new IllegalArgumentException("Min 1");
+        }
+        a = new int[n];
+        total = getFactorial(n);
+        reset();
+    }
 
-	public PermutationGenerator(int n) {
-		if (n < 1) {
-			throw new IllegalArgumentException("Min 1");
-		}
-		a = new int[n];
-		total = getFactorial(n);
-		reset();
-	}
+    // ------
+    // Reset
+    // ------
+    public void reset() {
+        for (int i = 0; i < a.length; i++) {
+            a[i] = i;
+        }
+        numLeft = new BigInteger(total.toString());
+    }
 
-	// ------
-	// Reset
-	// ------
+    // ------------------------------------------------
+    // Return number of permutations not yet generated
+    // ------------------------------------------------
+    public BigInteger getNumLeft() {
+        return numLeft;
+    }
 
-	public void reset() {
-		for (int i = 0; i < a.length; i++) {
-			a[i] = i;
-		}
-		numLeft = new BigInteger(total.toString());
-	}
+    // ------------------------------------
+    // Return total number of permutations
+    // ------------------------------------
+    public BigInteger getTotal() {
+        return total;
+    }
 
-	// ------------------------------------------------
-	// Return number of permutations not yet generated
-	// ------------------------------------------------
+    // -----------------------------
+    // Are there more permutations?
+    // -----------------------------
+    public boolean hasMore() {
+        return numLeft.compareTo(BigInteger.ZERO) == 1;
+    }
 
-	public BigInteger getNumLeft() {
-		return numLeft;
-	}
+    // ------------------
+    // Compute factorial
+    // ------------------
+    private static BigInteger getFactorial(int n) {
+        BigInteger fact = BigInteger.ONE;
+        for (int i = n; i > 1; i--) {
+            fact = fact.multiply(new BigInteger(Integer.toString(i)));
+        }
+        return fact;
+    }
 
-	// ------------------------------------
-	// Return total number of permutations
-	// ------------------------------------
+    // --------------------------------------------------------
+    // Generate next permutation (algorithm from Rosen p. 284)
+    // --------------------------------------------------------
+    public int[] getNext() {
 
-	public BigInteger getTotal() {
-		return total;
-	}
+        if (numLeft.equals(total)) {
+            numLeft = numLeft.subtract(BigInteger.ONE);
+            return a;
+        }
 
-	// -----------------------------
-	// Are there more permutations?
-	// -----------------------------
+        int temp;
 
-	public boolean hasMore() {
-		return numLeft.compareTo(BigInteger.ZERO) == 1;
-	}
+        // Find largest index j with a[j] < a[j+1]
 
-	// ------------------
-	// Compute factorial
-	// ------------------
+        int j = a.length - 2;
+        while (a[j] > a[j + 1]) {
+            j--;
+        }
 
-	private static BigInteger getFactorial(int n) {
-		BigInteger fact = BigInteger.ONE;
-		for (int i = n; i > 1; i--) {
-			fact = fact.multiply(new BigInteger(Integer.toString(i)));
-		}
-		return fact;
-	}
+        // Find index k such that a[k] is smallest integer
+        // greater than a[j] to the right of a[j]
 
-	// --------------------------------------------------------
-	// Generate next permutation (algorithm from Rosen p. 284)
-	// --------------------------------------------------------
+        int k = a.length - 1;
+        while (a[j] > a[k]) {
+            k--;
+        }
 
-	public int[] getNext() {
+        // Interchange a[j] and a[k]
 
-		if (numLeft.equals(total)) {
-			numLeft = numLeft.subtract(BigInteger.ONE);
-			return a;
-		}
+        temp = a[k];
+        a[k] = a[j];
+        a[j] = temp;
 
-		int temp;
+        // Put tail end of permutation after jth position in increasing order
 
-		// Find largest index j with a[j] < a[j+1]
+        int r = a.length - 1;
+        int s = j + 1;
 
-		int j = a.length - 2;
-		while (a[j] > a[j + 1]) {
-			j--;
-		}
+        while (r > s) {
+            temp = a[s];
+            a[s] = a[r];
+            a[r] = temp;
+            r--;
+            s++;
+        }
 
-		// Find index k such that a[k] is smallest integer
-		// greater than a[j] to the right of a[j]
+        numLeft = numLeft.subtract(BigInteger.ONE);
+        return a;
 
-		int k = a.length - 1;
-		while (a[j] > a[k]) {
-			k--;
-		}
+    }
 
-		// Interchange a[j] and a[k]
+    public static List<String[]> getResults(List<String> elements) {
+        List<String[]> result = new ArrayList<String[]>();
+        int[] indices;
+        //String[] elements = {"Roma", "Paris", "Londres", "Tokyo"};
+        PermutationGenerator x = new PermutationGenerator(elements.size());
+        while (x.hasMore()) {
+            indices = x.getNext();
+            String[] row = new String[indices.length];
+            for (int i = 0; i < indices.length; i++) {
+                row[i] = elements.get(indices[i]);
+            }
+            result.add(row);
+        }
+        return result;
+    }
 
-		temp = a[k];
-		a[k] = a[j];
-		a[j] = temp;
+    public static void main(String args[]) {
+        int[] indices;
+        String[] elements = {"Roma", "Paris", "Londres", "Tokyo"};
+        PermutationGenerator x = new PermutationGenerator(elements.length);
+        StringBuffer permutation;
+        while (x.hasMore()) {
+            permutation = new StringBuffer();
+            indices = x.getNext();
+            for (int i = 0; i < indices.length; i++) {
+                permutation.append(elements[indices[i]] + "\t");
+            }
+            System.out.println(permutation.toString());
+        }
 
-		// Put tail end of permutation after jth position in increasing order
-
-		int r = a.length - 1;
-		int s = j + 1;
-
-		while (r > s) {
-			temp = a[s];
-			a[s] = a[r];
-			a[r] = temp;
-			r--;
-			s++;
-		}
-
-		numLeft = numLeft.subtract(BigInteger.ONE);
-		return a;
-
-	}
-
-	public static void main(String args[]) {
-		int[] indices;
-		String[] elements = { "Roma", "Paris", "Londres", "Tokyo" };
-		PermutationGenerator x = new PermutationGenerator(elements.length);
-		StringBuffer permutation;
-		while (x.hasMore()) {
-			permutation = new StringBuffer();
-			indices = x.getNext();
-			for (int i = 0; i < indices.length; i++) {
-				permutation.append(elements[indices[i]] + "\t");
-			}
-			System.out.println(permutation.toString());
-		}
-
-	}
-
+    }
 }

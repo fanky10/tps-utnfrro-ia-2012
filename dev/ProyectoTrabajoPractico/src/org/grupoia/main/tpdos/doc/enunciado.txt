@@ -33,7 +33,6 @@ Ejercicio:
 Desarrollar dos programas que resuelvan el problema de las jarras de agua, utilizando las estrategias de búsqueda primero en anchura y
 primero en profundidad.
 
-Para los ptos: 2~4 pensar la GUI mas adecuada
 
 Punto B)
 1- Generación y prueba

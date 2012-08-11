@@ -25,7 +25,7 @@ import org.grupoia.main.tpdos.common.Rama;
 public class DiagPrimero extends javax.swing.JDialog {
 
     private static final Boolean DEBUG = true;
-    private DynamicTree dynamicTree = null;
+    private MyDynamicTree dynamicTree = null;
 
     /** Creates new form DiagPrimero */
     public DiagPrimero(java.awt.Frame parent, boolean modal) {
@@ -36,12 +36,12 @@ public class DiagPrimero extends javax.swing.JDialog {
     }
 
     private void init() {
-        dynamicTree = new DynamicTree();
+        dynamicTree = new MyDynamicTree();
         populateTree(dynamicTree);
         treePanel.add(dynamicTree);
     }
 
-    public void populateTree(DynamicTree treePanel) {
+    public void populateTree(MyDynamicTree treePanel) {
         String p1Name = new String("Parent 1");
         String p2Name = new String("Parent 2");
         String c1Name = new String("Child 1");
@@ -58,19 +58,59 @@ public class DiagPrimero extends javax.swing.JDialog {
         treePanel.addObject(p2, c1Name);
         treePanel.addObject(p2, c2Name);
     }
+    // como agrego mis nodos customizados?
+    private void addNodos(MyDynamicTree treePanel) {
+        String p1Name = new String("Parent 1");
+        String p2Name = new String("Parent 2");
+        
+        DefaultMutableTreeNode p1, p2;
 
-    private void createNodes(DefaultMutableTreeNode top) {
+        p1 = treePanel.addObject(null, p1Name);
+        p2 = treePanel.addObject(null, p2Name);
+        
+        String c1Name = new String("Child 1");
+        String c2Name = new String("Child 2");
+
+        treePanel.addObject(p1, c1Name);
+        treePanel.addObject(p1, c2Name);
+
+        treePanel.addObject(p2, c1Name);
+        treePanel.addObject(p2, c2Name);
+        
         NodoArbol raiz = generaArbol();
-        List<NodoArbol> ramas = raiz.getNodosHijos();
-        //ver de hacer una recursiva (:
-        for (NodoArbol r : ramas) {
-            DefaultMutableTreeNode rama = new DefaultMutableTreeNode("Rama " + r.getValue());
-            top.add(rama);
-            for (NodoArbol hoja : r.getNodosHijos()) {
-                rama.add(new DefaultMutableTreeNode(hoja));
+        if(raiz.hasChildren()){
+            DefaultMutableTreeNode dmtParent = treePanel.addObject(null,raiz);
+            for(NodoArbol na: raiz.getNodosHijos()){
+//                treePanel
             }
         }
     }
+
+//    private void createNodes(DefaultMutableTreeNode top) {
+//        NodoArbol raiz = generaArbol();
+//        List<NodoArbol> ramas = raiz.getNodosHijos();
+//        //ver de hacer una recursiva (:
+//        for (NodoArbol r : ramas) {
+//            DefaultMutableTreeNode rama = new DefaultMutableTreeNode("Rama " + r.getValue());
+//            top.add(rama);
+//            for (NodoArbol hoja : r.getNodosHijos()) {
+//                rama.add(new DefaultMutableTreeNode(hoja));
+//            }
+//        }
+//    }
+//    //acceso recursivo a los objetos.
+//    private void agregarNodo(MyDynamicTree treePanel,NodoArbol parent, NodoArbol child){
+//        if(parent==null){
+//            agregarNodo(treePanel,child,null);
+//        }
+//        if(!nodo.hasChildren()){
+//            DefaultMutableTreeNode parent = treePanel.addObject(null, nodo);
+//            for(NodoArbol na: nodo.getNodosHijos()){
+//                agregarNodo(treePanel,na);
+//            }
+//        }
+//        
+//    }
 
     public static Raiz generaArbol() {
         //todas las hojas

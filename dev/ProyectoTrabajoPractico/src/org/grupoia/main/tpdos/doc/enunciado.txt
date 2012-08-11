@@ -17,7 +17,7 @@ Deja de explorar una ruta tan pronto como su distancia total, hasta ese momento,
 Ejercicio:
 Un viajante de comercio interestelar debe recorrer 4 estrellas, cada una de las cuales debe visitar exactamente una vez.
 Existen rutas directas entre cada pareja de estrellas a visitar y sus distancias se expresan en años luz.
-Se desea encontrar la ruta más corta posible que debe seruir el vendedor que empiece y termine en alguna de las siguientes estrellas.
+Se desea encontrar la ruta más corta posible que debe seguir el vendedor que empiece y termine en alguna de las siguientes estrellas.
 
 Canopus - Aldebarán - Sirio - Betelgeuse
 

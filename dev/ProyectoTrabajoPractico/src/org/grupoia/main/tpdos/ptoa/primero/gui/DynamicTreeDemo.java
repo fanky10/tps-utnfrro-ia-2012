@@ -58,13 +58,13 @@ public class DynamicTreeDemo extends JPanel
     private static String REMOVE_COMMAND = "remove";
     private static String CLEAR_COMMAND = "clear";
     
-    private DynamicTree treePanel;
+    private MyDynamicTree treePanel;
 
     public DynamicTreeDemo() {
         super(new BorderLayout());
         
         //Create the components.
-        treePanel = new DynamicTree();
+        treePanel = new MyDynamicTree();
         populateTree(treePanel);
 
         JButton addButton = new JButton("Add");
@@ -90,7 +90,7 @@ public class DynamicTreeDemo extends JPanel
 	add(panel, BorderLayout.SOUTH);
     }
 
-    public void populateTree(DynamicTree treePanel) {
+    public void populateTree(MyDynamicTree treePanel) {
         String p1Name = new String("Parent 1");
         String p2Name = new String("Parent 2");
         String c1Name = new String("Child 1");

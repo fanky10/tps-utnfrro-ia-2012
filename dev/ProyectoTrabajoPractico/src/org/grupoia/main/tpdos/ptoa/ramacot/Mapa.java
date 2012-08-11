@@ -18,6 +18,7 @@ public class Mapa extends ArrayList<Distancia> {
                 return dist;
             }
         }
-        throw new IllegalArgumentException("distancia no encontrada: d1 "+d1+ " d2 "+d2);
+        return null;
+        //throw new IllegalArgumentException("distancia no encontrada: d1 "+d1+ " d2 "+d2);
     }
 }

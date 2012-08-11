@@ -65,7 +65,7 @@ public class MockedCiudades {
         m.add(new Distancia(c2, c3, 7));
         m.add(new Distancia(c2, c4, 12));
         
-        m.add(new Distancia(c3, c1, 10));
+        m.add(new Distancia(c3, c1, 20));
         m.add(new Distancia(c3, c2, 7));
         m.add(new Distancia(c3, c4, 8));
         

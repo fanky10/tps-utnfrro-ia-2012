@@ -11,6 +11,7 @@
 package org.grupoia.main.tpdos.ptoa.ramacot.gui;
 
 import java.util.List;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -18,6 +19,8 @@ import javax.swing.table.DefaultTableModel;
 import org.grupoia.main.tpdos.mockedobjects.MockedCiudades;
 import org.grupoia.main.tpdos.ptoa.ramacot.Ciudad;
 import org.grupoia.main.tpdos.ptoa.ramacot.Distancia;
+import org.grupoia.main.tpdos.ptoa.ramacot.HojaRuta;
+import org.grupoia.main.tpdos.ptoa.ramacot.RamificacionAcotacionSolucion;
 
 /**
  *
@@ -26,6 +29,7 @@ import org.grupoia.main.tpdos.ptoa.ramacot.Distancia;
 public class DiagRamAcot extends javax.swing.JDialog {
 
     private List<Distancia> distancias = MockedCiudades.generaDistanciasCiudades();
+    private List<HojaRuta> hojasGen;
 
     /** Creates new form DiagRamAcot */
     public DiagRamAcot(java.awt.Frame parent, boolean modal) {
@@ -50,9 +54,11 @@ public class DiagRamAcot extends javax.swing.JDialog {
                 txtDistancia.grabFocus();
             }
         });
-        populaCiudades();
+        populaDistancias();
+        populaCombo();
     }
-    private void populaCiudades() {
+
+    private void populaDistancias() {
         DefaultTableModel tableModel = new DefaultTableModel(new Object[]{"C1", "C2", "Distancia"}, 0);
         for (Distancia d : distancias) {
             tableModel.addRow(new Object[]{d.getOrigen(), d.getDestino(), d.getDistancia()});
@@ -60,10 +66,44 @@ public class DiagRamAcot extends javax.swing.JDialog {
         tblParCiudades.setModel(tableModel);
     }
 
+    private void populaCombo() {
+
+        List<Ciudad> ciudadesDisponibles = MockedCiudades.getCiudades();
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        model.addElement("Seleccione una ciudad a buscar");
+        for (Ciudad c : ciudadesDisponibles) {
+            model.addElement(c);
+
+        }
+        cmbCiudades.setModel(model);
+
+    }
+
     private void refrescaTablaResultados() {
+        DefaultTableModel tableModel = new DefaultTableModel(new Object[]{"Camino", "Distancia"}, 0);
+        for (HojaRuta d : hojasGen) {
+            tableModel.addRow(new Object[]{d, d.getDistanciaTotal()});
+        }
+        tblResultados.setModel(tableModel);
+
     }
 
     private void editarDistancia() {
+        String input = txtDistancia.getText();
+        if (input.isEmpty()) {
+            return;
+        }
+        int index = tblParCiudades.getSelectedRow();
+        if (index < 0) {
+            return;
+        }
+        try {
+            Distancia distancia = distancias.get(index);
+            int i = Integer.parseInt(input);
+            distancia.setDistancia(i);
+            populaDistancias();
+        } catch (NumberFormatException x) {
+        }
     }
 
     /** This method is called from within the constructor to
@@ -80,8 +120,7 @@ public class DiagRamAcot extends javax.swing.JDialog {
         jPanel1 = new javax.swing.JPanel();
         txtDistancia = new javax.swing.JTextField();
         btnEditarDistancia = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
+        cmbCiudades = new javax.swing.JComboBox();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblResultados = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
@@ -116,24 +155,26 @@ public class DiagRamAcot extends javax.swing.JDialog {
         });
 
         btnEditarDistancia.setText("Editar Distancia");
+        btnEditarDistancia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarDistanciaActionPerformed(evt);
+            }
+        });
 
-        jButton1.setText("Buscar");
-
-        jTextField1.setText("jTextField1");
+        cmbCiudades.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbCiudades.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbCiudadesActionPerformed(evt);
+            }
+        });
 
         org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(txtDistancia, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE)
-            .add(btnEditarDistancia, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE)
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .add(jButton1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE))
-            .add(jPanel1Layout.createSequentialGroup()
-                .add(8, 8, 8)
-                .add(jTextField1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 154, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .add(txtDistancia, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 190, Short.MAX_VALUE)
+            .add(btnEditarDistancia, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 190, Short.MAX_VALUE)
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, cmbCiudades, 0, 190, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -141,11 +182,9 @@ public class DiagRamAcot extends javax.swing.JDialog {
                 .add(txtDistancia, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(btnEditarDistancia)
-                .add(2, 2, 2)
-                .add(jTextField1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jButton1)
-                .addContainerGap(131, Short.MAX_VALUE))
+                .add(cmbCiudades, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(163, Short.MAX_VALUE))
         );
 
         tblResultados.setModel(new javax.swing.table.DefaultTableModel(
@@ -162,6 +201,11 @@ public class DiagRamAcot extends javax.swing.JDialog {
         jScrollPane2.setViewportView(tblResultados);
 
         btnCerrar.setText("Cerrar");
+        btnCerrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCerrarActionPerformed(evt);
+            }
+        });
         jPanel2.add(btnCerrar);
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
@@ -171,13 +215,13 @@ public class DiagRamAcot extends javax.swing.JDialog {
             .add(layout.createSequentialGroup()
                 .addContainerGap()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jScrollPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 439, Short.MAX_VALUE)
+                    .add(jScrollPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 447, Short.MAX_VALUE)
                     .add(layout.createSequentialGroup()
                         .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 243, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 479, Short.MAX_VALUE)
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 487, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -195,13 +239,26 @@ public class DiagRamAcot extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnEditarDistanciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarDistanciaActionPerformed
+
+        editarDistancia();     }//GEN-LAST:event_btnEditarDistanciaActionPerformed
+
     private void txtDistanciaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtDistanciaFocusGained
-        txtDistancia.selectAll();
-    }//GEN-LAST:event_txtDistanciaFocusGained
+
+        txtDistancia.selectAll();     }//GEN-LAST:event_txtDistanciaFocusGained
 
     private void txtDistanciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDistanciaActionPerformed
-        editarDistancia();
-    }//GEN-LAST:event_txtDistanciaActionPerformed
+
+        editarDistancia();     }//GEN-LAST:event_txtDistanciaActionPerformed
+
+    private void btnCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarActionPerformed
+        cerrar();
+    }//GEN-LAST:event_btnCerrarActionPerformed
+
+    private void cmbCiudadesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbCiudadesActionPerformed
+        buscarHojaDeRuta();
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbCiudadesActionPerformed
 
     /**
      * @param args the command line arguments
@@ -243,20 +300,36 @@ public class DiagRamAcot extends javax.swing.JDialog {
                     }
                 });
                 dialog.setVisible(true);
+                dialog.dispose();
+                System.exit(0);
             }
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCerrar;
     private javax.swing.JButton btnEditarDistancia;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JComboBox cmbCiudades;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTable tblParCiudades;
     private javax.swing.JTable tblResultados;
     private javax.swing.JTextField txtDistancia;
     // End of variables declaration//GEN-END:variables
+
+    private void cerrar() {
+        this.dispose();
+    }
+
+    private void buscarHojaDeRuta() {
+        Ciudad c = null;
+        try {
+            c = (Ciudad) cmbCiudades.getSelectedItem();
+
+        } catch (ClassCastException x) {
+        }
+        hojasGen = RamificacionAcotacionSolucion.getHojaRuta(c);
+        refrescaTablaResultados();
+    }
 }

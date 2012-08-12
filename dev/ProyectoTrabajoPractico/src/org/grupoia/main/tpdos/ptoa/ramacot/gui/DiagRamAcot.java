@@ -16,6 +16,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 import org.grupoia.main.tpdos.mockedobjects.MockedCiudades;
 import org.grupoia.main.tpdos.ptoa.ramacot.Ciudad;
 import org.grupoia.main.tpdos.ptoa.ramacot.Distancia;
@@ -36,7 +37,7 @@ public class DiagRamAcot extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         init();
-
+        setLocationRelativeTo(null);
     }
 
     private void init() {
@@ -56,10 +57,11 @@ public class DiagRamAcot extends javax.swing.JDialog {
         });
         populaDistancias();
         populaCombo();
+        buscarHojaDeRuta();
     }
 
     private void populaDistancias() {
-        DefaultTableModel tableModel = new DefaultTableModel(new Object[]{"C1", "C2", "Distancia"}, 0);
+        DefaultTableModel tableModel = new DefaultTableModel(new Object[]{"Origen", "Destino", "Distancia"}, 0);
         for (Distancia d : distancias) {
             tableModel.addRow(new Object[]{d.getOrigen(), d.getDestino(), d.getDistancia()});
         }
@@ -70,7 +72,7 @@ public class DiagRamAcot extends javax.swing.JDialog {
 
         List<Ciudad> ciudadesDisponibles = MockedCiudades.getCiudades();
         DefaultComboBoxModel model = new DefaultComboBoxModel();
-        model.addElement("Seleccione una ciudad a buscar");
+        model.addElement("Seleccione una estrella a buscar");
         for (Ciudad c : ciudadesDisponibles) {
             model.addElement(c);
 
@@ -80,12 +82,22 @@ public class DiagRamAcot extends javax.swing.JDialog {
     }
 
     private void refrescaTablaResultados() {
-        DefaultTableModel tableModel = new DefaultTableModel(new Object[]{"Camino", "Distancia"}, 0);
-        for (HojaRuta d : hojasGen) {
-            tableModel.addRow(new Object[]{d, d.getDistanciaTotal()});
+        DefaultTableModel tableModel = new DefaultTableModel();
+        if (hojasGen == null) {
+            tableModel.setColumnIdentifiers(new Object[]{"Seleccione alguna estrella"});
+        } else {
+            tableModel.setColumnIdentifiers(new Object[]{"Camino", "Distancia"});
+            for (HojaRuta d : hojasGen) {
+                tableModel.addRow(new Object[]{d, d.getDistanciaTotal()});
+            }
         }
         tblResultados.setModel(tableModel);
-
+        for(int i = 0; i< tblResultados.getColumnCount();i++){
+            if(i==1){//columna de distancia
+                TableColumn tc = tblResultados.getColumnModel().getColumn(i);
+                tc.setMaxWidth(80);
+            }
+        }
     }
 
     private void editarDistancia() {
@@ -172,19 +184,20 @@ public class DiagRamAcot extends javax.swing.JDialog {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(txtDistancia, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 190, Short.MAX_VALUE)
-            .add(btnEditarDistancia, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 190, Short.MAX_VALUE)
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, cmbCiudades, 0, 190, Short.MAX_VALUE)
+            .add(cmbCiudades, 0, 313, Short.MAX_VALUE)
+            .add(jPanel1Layout.createSequentialGroup()
+                .add(txtDistancia, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 161, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(btnEditarDistancia))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel1Layout.createSequentialGroup()
-                .add(txtDistancia, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(btnEditarDistancia)
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(txtDistancia, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(btnEditarDistancia))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(cmbCiudades, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(163, Short.MAX_VALUE))
+                .add(cmbCiudades, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
         );
 
         tblResultados.setModel(new javax.swing.table.DefaultTableModel(
@@ -212,26 +225,25 @@ public class DiagRamAcot extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 1145, Short.MAX_VALUE)
             .add(layout.createSequentialGroup()
                 .addContainerGap()
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jScrollPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 447, Short.MAX_VALUE)
-                    .add(layout.createSequentialGroup()
-                        .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 243, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                    .add(jScrollPane1, 0, 0, Short.MAX_VALUE)
+                    .add(jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jScrollPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 778, Short.MAX_VALUE)
                 .addContainerGap())
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 487, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
-                    .add(org.jdesktop.layout.GroupLayout.LEADING, jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(org.jdesktop.layout.GroupLayout.LEADING, jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE))
+                .addContainerGap()
+                .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jScrollPane2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 262, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                    .add(jScrollPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 385, Short.MAX_VALUE)
+                    .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 385, Short.MAX_VALUE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jPanel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
         );

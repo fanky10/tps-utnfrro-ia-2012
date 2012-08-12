@@ -22,12 +22,14 @@ import org.grupoia.main.tpdos.ptob.genprueba.MyColor;
  * @author fanky
  */
 public class DiagGenPrueba extends javax.swing.JDialog {
-
+    private static final String TITLE = "Generacion y Prueba";
     /** Creates new form DiagGenPrueba */
     public DiagGenPrueba(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         init();
+        setTitle(TITLE);
+        setLocationRelativeTo(null);
     }
     private void init(){
         reiniciarColores();

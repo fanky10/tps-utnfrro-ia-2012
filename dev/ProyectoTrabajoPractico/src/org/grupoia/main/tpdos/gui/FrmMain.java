@@ -14,6 +14,7 @@ import javax.swing.JDialog;
 import org.grupoia.main.tpdos.ptoa.explcomb.gui.DiagPermutacion;
 import org.grupoia.main.tpdos.ptoa.primero.gui.DiagPrimero;
 import org.grupoia.main.tpdos.ptoa.ramacot.gui.DiagRamAcot;
+import org.grupoia.main.tpdos.ptob.escalada.gui.DiagEscalada;
 import org.grupoia.main.tpdos.ptob.genprueba.gui.DiagGenPrueba;
 
 /**
@@ -48,6 +49,7 @@ public class FrmMain extends javax.swing.JFrame {
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
+        jMenuItem7 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -110,6 +112,14 @@ public class FrmMain extends javax.swing.JFrame {
         });
         jMenu3.add(jMenuItem4);
 
+        jMenuItem7.setText("Escalada");
+        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem7ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem7);
+
         jMenuBar1.add(jMenu3);
 
         setJMenuBar(jMenuBar1);
@@ -151,6 +161,10 @@ public class FrmMain extends javax.swing.JFrame {
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
         about();
     }//GEN-LAST:event_jMenuItem6ActionPerformed
+
+    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
+        escalada();
+    }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -198,6 +212,7 @@ public class FrmMain extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JMenuItem jMenuItem7;
     // End of variables declaration//GEN-END:variables
 
     private void muestraDialogo(JDialog diag) {
@@ -223,5 +238,9 @@ public class FrmMain extends javax.swing.JFrame {
     
     private void about(){
         //TODO: crear el dialog de about xD
+    }
+
+    private void escalada() {
+        muestraDialogo(new DiagEscalada(this, true));
     }
 }

@@ -22,12 +22,11 @@ public class RamificacionAcotacionSolucion {
     private HojaRuta hojaRutaMasCorta = null;
     private List<Ciudad> ciudadesDisponibles = MockedCiudades.getCiudades();
 
-    public static List<HojaRuta> getHojaRuta(Ciudad ciudad) {
+    public static List<HojaRuta> getHojasRutas(Ciudad ciudad,Mapa mapaActual) {
         Integer ciudadSeleccionada = getIndex(ciudad);
         List<Ciudad> ciudadesDisponibles = MockedCiudades.getCiudades();
         List<HojaRuta> hojasPosibles = new ArrayList<HojaRuta>();
         HojaRuta mejorOpcion = null;
-        Mapa mapa = MockedCiudades.generaMapa();
 
         int[] indices;
 
@@ -35,7 +34,7 @@ public class RamificacionAcotacionSolucion {
 
         while (x.hasMore()) {
             indices = x.getNext();
-            if (ciudadSeleccionada >= 0 && indices[0] != ciudadSeleccionada) { // aca chequear con cual quiero empezar (:
+            if (ciudadSeleccionada >= 0 && indices[0] != ciudadSeleccionada) { // aca chequea cual quiero de origen
                 continue;
             }
 
@@ -50,16 +49,20 @@ public class RamificacionAcotacionSolucion {
                 for (int j = 0; j < ciudadesPosibles.size(); j++) {
                     Distancia d = null;
                     if (j == (ciudadesPosibles.size() - 1)) {
-                        d = mapa.getDistancia(ciudadesPosibles.get(j), ciudadesPosibles.get(0));
+                        d = mapaActual.getDistancia(ciudadesPosibles.get(j), ciudadesPosibles.get(0));
                     } else {
-                        d = mapa.getDistancia(ciudadesPosibles.get(j), ciudadesPosibles.get(j + 1));
+                        d = mapaActual.getDistancia(ciudadesPosibles.get(j), ciudadesPosibles.get(j + 1));
                     }
                     if (d != null) {//avoid nullpointerException (:
                         hr.add(d);
                     }
                 }
+                //si todavia no tengo ni siquiera una ruta, que siga para adelante
+                if(hr.isEmpty()){
+                    continue; 
+                }
                 hojasPosibles.add(hr);
-                System.out.println("HojaRuta generada: " + hr + " con distancia: " + hr.getDistanciaTotal());
+//                System.out.println("HojaRuta generada: " + hr + " con distancia: " + hr.getDistanciaTotal());
                 // si estoy en la ultima y no hay mejor opcion, es la mejor opc (:
                 // o si estoy en la ultima y mi opcion es mejor (:
                 // hay una mejor opcion.
@@ -68,7 +71,8 @@ public class RamificacionAcotacionSolucion {
                     mejorOpcion = hr;
                 } //si la actual (ya sea ultima o no, es peor que la posta then fuck it!
                 else if (mejorOpcion != null && mejorOpcion.getDistanciaTotal() < hr.getDistanciaTotal()) {
-                    System.out.println("basta de buscar, esta es malisima!");
+//                    System.out.println("basta de buscar, esta es malisima!");
+                    //TODO: ponerla en rojo o algo asi
                     break;
                 }
             }

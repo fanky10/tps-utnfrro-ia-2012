@@ -21,6 +21,7 @@ import org.grupoia.main.tpdos.mockedobjects.MockedCiudades;
 import org.grupoia.main.tpdos.ptoa.ramacot.Ciudad;
 import org.grupoia.main.tpdos.ptoa.ramacot.Distancia;
 import org.grupoia.main.tpdos.ptoa.ramacot.HojaRuta;
+import org.grupoia.main.tpdos.ptoa.ramacot.Mapa;
 import org.grupoia.main.tpdos.ptoa.ramacot.RamificacionAcotacionSolucion;
 
 /**
@@ -29,7 +30,7 @@ import org.grupoia.main.tpdos.ptoa.ramacot.RamificacionAcotacionSolucion;
  */
 public class DiagRamAcot extends javax.swing.JDialog {
 
-    private List<Distancia> distancias = MockedCiudades.generaDistanciasCiudades();
+    private Mapa mapa = MockedCiudades.generaMapa();
     private List<HojaRuta> hojasGen;
 
     /** Creates new form DiagRamAcot */
@@ -62,7 +63,7 @@ public class DiagRamAcot extends javax.swing.JDialog {
 
     private void populaDistancias() {
         DefaultTableModel tableModel = new DefaultTableModel(new Object[]{"Origen", "Destino", "Distancia"}, 0);
-        for (Distancia d : distancias) {
+        for (Distancia d : mapa) {
             tableModel.addRow(new Object[]{d.getOrigen(), d.getDestino(), d.getDistancia()});
         }
         tblParCiudades.setModel(tableModel);
@@ -110,7 +111,7 @@ public class DiagRamAcot extends javax.swing.JDialog {
             return;
         }
         try {
-            Distancia distancia = distancias.get(index);
+            Distancia distancia = mapa.get(index);
             int i = Integer.parseInt(input);
             distancia.setDistancia(i);
             populaDistancias();
@@ -341,7 +342,7 @@ public class DiagRamAcot extends javax.swing.JDialog {
 
         } catch (ClassCastException x) {
         }
-        hojasGen = RamificacionAcotacionSolucion.getHojaRuta(c);
+        hojasGen = RamificacionAcotacionSolucion.getHojasRutas(c, mapa);
         refrescaTablaResultados();
     }
 }

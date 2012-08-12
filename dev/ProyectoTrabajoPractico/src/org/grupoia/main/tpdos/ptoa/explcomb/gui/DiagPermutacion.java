@@ -21,7 +21,7 @@ import org.grupoia.main.tpdos.ptoa.explcomb.PermutationGenerator;
  * @author fanky
  */
 public class DiagPermutacion extends javax.swing.JDialog {
-
+    private static final String TITLE = "Explosion Combinatoria";
     private List<String> ciudades = new ArrayList<String>();
     private List<String[]> resultados = new ArrayList<String[]>();
 
@@ -30,6 +30,7 @@ public class DiagPermutacion extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         init();
+        setTitle(TITLE);
         setLocationRelativeTo(null);
     }
 

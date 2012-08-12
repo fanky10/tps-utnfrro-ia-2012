@@ -29,7 +29,7 @@ import org.grupoia.main.tpdos.ptoa.ramacot.RamificacionAcotacionSolucion;
  * @author fanky
  */
 public class DiagRamAcot extends javax.swing.JDialog {
-
+    private static final String TITLE = "Ramificacion Acotacion";
     private Mapa mapa = MockedCiudades.generaMapa();
     private List<HojaRuta> hojasGen;
 
@@ -38,6 +38,7 @@ public class DiagRamAcot extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         init();
+        this.setTitle(TITLE);
         setLocationRelativeTo(null);
     }
 
@@ -115,6 +116,7 @@ public class DiagRamAcot extends javax.swing.JDialog {
             int i = Integer.parseInt(input);
             distancia.setDistancia(i);
             populaDistancias();
+            buscarHojaDeRuta();
         } catch (NumberFormatException x) {
         }
     }

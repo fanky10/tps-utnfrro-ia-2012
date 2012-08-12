@@ -14,6 +14,7 @@ import java.awt.Color;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
 import org.grupoia.main.tpdos.ptob.genprueba.Dado;
+import org.grupoia.main.tpdos.ptob.genprueba.Dados;
 import org.grupoia.main.tpdos.ptob.genprueba.MyColor;
 
 /**
@@ -40,6 +41,32 @@ public class DiagGenPrueba extends javax.swing.JDialog {
     }
 
     private void buscarCombinacion() {
+        Dados dados = new Dados();
+        dados.add(new Dado(lblColor1.getBackground()));
+        dados.add(new Dado(lblColor2.getBackground()));
+        dados.add(new Dado(lblColor3.getBackground()));
+        dados.add(new Dado(lblColor4.getBackground()));
+        
+        boolean finalizo = false;
+        //generar una posible solucion
+        //configurar dados
+        //verificar si el objetivo se cumplió
+        //si no verifica, cambiar configuracion
+        finalizo = dados.verificaConfig();
+        if (!finalizo){
+            dados.cambiaConfig();
+            System.out.println("nueva config:"+dados);
+            refreshLabels(dados);
+        }else{
+            btnBuscar.setEnabled(false);
+        }
+    }
+    private void refreshLabels(Dados dados){
+        lblColor1.setBackground(dados.get(0).getColor());
+        lblColor2.setBackground(dados.get(1).getColor());
+        lblColor3.setBackground(dados.get(2).getColor());
+        lblColor4.setBackground(dados.get(3).getColor());
+        
     }
 
     private void reiniciarColores() {
@@ -49,6 +76,7 @@ public class DiagGenPrueba extends javax.swing.JDialog {
         lblColor3.setBackground(defaultColor);
         lblColor4.setBackground(defaultColor);
         initCombos();
+        btnBuscar.setEnabled(true);
     }
 
     private void cerrar() {

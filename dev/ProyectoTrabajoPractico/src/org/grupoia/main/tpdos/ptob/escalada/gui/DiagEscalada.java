@@ -21,10 +21,12 @@ import org.grupoia.main.tpdos.ptob.escalada.Posicion;
  * @author fanky
  */
 public class DiagEscalada extends javax.swing.JDialog {
+
     private List<Posicion> movimientos = new ArrayList<Posicion>();
-    private static final Integer CELDA=25;
-    private Posicion pActual = new Posicion(1,2);
-    private Posicion pObjetivo = new Posicion(5,7);
+    private static final Integer CELDA = 25;
+    private Posicion pActual = new Posicion(1, 2);
+    private Posicion pObjetivo = new Posicion(5, 7);
+
     /** Creates new form DiagEscalada */
     public DiagEscalada(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -44,16 +46,19 @@ public class DiagEscalada extends javax.swing.JDialog {
 
         tblCuadricula.setValueAt("X", 0, 0);
     }
-    private void siguienteMovimiento(){
-        pActual = Escalador.buscaNuevaPosicion(pActual, pObjetivo);
-        movimientos.add(pActual);
-        refreshTable();
+
+    private void siguienteMovimiento() {
+        if (pActual != null) {
+            pActual = Escalador.buscaNuevaPosicion(pActual, pObjetivo);
+            movimientos.add(pActual);
+            refreshTable();
+        }
     }
-    private void refreshTable(){
+
+    private void refreshTable() {
         DefaultTableModel tmodel = new DefaultTableModel(new Object[]{"Posiciones"}, 0);
-        for(Posicion p: movimientos){
+        for (Posicion p : movimientos) {
             tmodel.addRow(new Object[]{p});
-            
         }
         tblCuadricula.setModel(tmodel);
     }

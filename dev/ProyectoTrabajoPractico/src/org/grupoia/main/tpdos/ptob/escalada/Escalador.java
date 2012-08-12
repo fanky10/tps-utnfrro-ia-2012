@@ -63,30 +63,29 @@ public class Escalador {
         debug("\tevaluando X");
         Posicion p = null;
         int movimiento = -1;
-        while (movimiento<0) {
+        while (true) {
             p = escalador.muevePosicionX(movimiento);
             int estado = escalador.evaluaPosicionX(p);
             debug("estado: "+estado);
             if (estado == 0) {
                 debug("llegue!");
-                
                 break;
             } else if (estado < 0) {//no estoy en una buena posicion
                 //rewrite!
                 debug("sobrescribiendo mi posicion chota");
                 escalador.setPosicionActual(p);
+                return p;
             } else {//estoy en una buena posicion!
-                debug("estoy en una buena posicion!");
                 movimiento = -movimiento;
-                p = escalador.getPosicionActual();
             }
             debug("=======================================");
             
 
+
         }
         debug("\tevaluando Y");
         movimiento = -1;
-        while (movimiento<0) {
+        while (true) {
             p = escalador.muevePosicionY(movimiento);
             int estado = escalador.evaluaPosicionY(p);
             debug("estado: "+estado);
@@ -97,6 +96,7 @@ public class Escalador {
                 //rewrite!
                 debug("sobrescribiendo mi posicion chota");
                 escalador.setPosicionActual(p);
+                return p;
             } else {//estoy en una buena posicion!
                 movimiento = -movimiento;
             }
@@ -104,7 +104,8 @@ public class Escalador {
             
 
         }
-        return p;
+        //se supone que siempre es la mejorcita (:
+        return null;//
         
     }
 

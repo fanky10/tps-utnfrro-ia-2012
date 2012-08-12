@@ -10,6 +10,12 @@
  */
 package org.grupoia.main.tpdos.ptob.genprueba.gui;
 
+import java.awt.Color;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JLabel;
+import org.grupoia.main.tpdos.ptob.genprueba.Dado;
+import org.grupoia.main.tpdos.ptob.genprueba.MyColor;
+
 /**
  *
  * @author fanky
@@ -20,6 +26,56 @@ public class DiagGenPrueba extends javax.swing.JDialog {
     public DiagGenPrueba(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        init();
+    }
+    private void init(){
+        reiniciarColores();
+    }
+    private void initCombos() {
+
+        cmbColor1.setModel(new DefaultComboBoxModel(Dado.COLORES_DISPONIBLES));
+        cmbColor2.setModel(new DefaultComboBoxModel(Dado.COLORES_DISPONIBLES));
+        cmbColor3.setModel(new DefaultComboBoxModel(Dado.COLORES_DISPONIBLES));
+        cmbColor4.setModel(new DefaultComboBoxModel(Dado.COLORES_DISPONIBLES));
+    }
+
+    private void buscarCombinacion() {
+    }
+
+    private void reiniciarColores() {
+        Color defaultColor = Color.WHITE;
+        lblColor1.setBackground(defaultColor);
+        lblColor2.setBackground(defaultColor);
+        lblColor3.setBackground(defaultColor);
+        lblColor4.setBackground(defaultColor);
+        initCombos();
+    }
+
+    private void cerrar() {
+        this.dispose();
+    }
+
+    private void cambiaColorLbl1() {
+        MyColor myColor = (MyColor) cmbColor1.getSelectedItem();
+        cambiaColor(myColor, lblColor1);
+    }
+
+    private void cambiaColorLbl2() {
+        MyColor myColor = (MyColor) cmbColor2.getSelectedItem();
+        cambiaColor(myColor, lblColor2);
+    }
+
+    private void cambiaColorLbl3() {
+        MyColor myColor = (MyColor) cmbColor3.getSelectedItem();
+        cambiaColor(myColor, lblColor3);
+    }
+
+    private void cambiaColorLbl4() {
+        MyColor myColor = (MyColor) cmbColor4.getSelectedItem();
+        cambiaColor(myColor, lblColor4);
+    }
+    private void cambiaColor(MyColor color, JLabel label){
+        label.setBackground(color.getColor());
     }
 
     /** This method is called from within the constructor to
@@ -37,55 +93,105 @@ public class DiagGenPrueba extends javax.swing.JDialog {
         btnReiniciar = new javax.swing.JButton();
         btnCerrar = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
-        jComboBox1 = new javax.swing.JComboBox();
-        jComboBox2 = new javax.swing.JComboBox();
-        jComboBox3 = new javax.swing.JComboBox();
-        jComboBox4 = new javax.swing.JComboBox();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        cmbColor1 = new javax.swing.JComboBox();
+        jPanel4 = new javax.swing.JPanel();
+        cmbColor2 = new javax.swing.JComboBox();
+        jPanel5 = new javax.swing.JPanel();
+        cmbColor3 = new javax.swing.JComboBox();
+        jPanel6 = new javax.swing.JPanel();
+        cmbColor4 = new javax.swing.JComboBox();
+        lblColor1 = new javax.swing.JLabel();
+        lblColor2 = new javax.swing.JLabel();
+        lblColor3 = new javax.swing.JLabel();
+        lblColor4 = new javax.swing.JLabel();
 
         jButton2.setText("jButton2");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnBuscar);
 
         btnReiniciar.setText("Reiniciar");
+        btnReiniciar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReiniciarActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnReiniciar);
 
         btnCerrar.setText("Cerrar");
+        btnCerrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCerrarActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnCerrar);
 
         jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jPanel2.setLayout(new java.awt.GridLayout(0, 4));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel2.add(jComboBox1);
+        cmbColor1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbColor1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbColor1ActionPerformed(evt);
+            }
+        });
+        jPanel3.add(cmbColor1);
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel2.add(jComboBox2);
+        jPanel2.add(jPanel3);
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel2.add(jComboBox3);
+        cmbColor2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbColor2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbColor2ActionPerformed(evt);
+            }
+        });
+        jPanel4.add(cmbColor2);
 
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel2.add(jComboBox4);
+        jPanel2.add(jPanel4);
 
-        jLabel1.setBackground(new java.awt.Color(51, 51, 255));
-        jLabel1.setText("jLabel1");
-        jPanel2.add(jLabel1);
+        cmbColor3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbColor3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbColor3ActionPerformed(evt);
+            }
+        });
+        jPanel5.add(cmbColor3);
 
-        jLabel2.setText("jLabel2");
-        jPanel2.add(jLabel2);
+        jPanel2.add(jPanel5);
 
-        jLabel3.setText("jLabel3");
-        jPanel2.add(jLabel3);
+        cmbColor4.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbColor4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbColor4ActionPerformed(evt);
+            }
+        });
+        jPanel6.add(cmbColor4);
 
-        jLabel4.setText("jLabel4");
-        jPanel2.add(jLabel4);
+        jPanel2.add(jPanel6);
+
+        lblColor1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        lblColor1.setOpaque(true);
+        jPanel2.add(lblColor1);
+
+        lblColor2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        lblColor2.setOpaque(true);
+        jPanel2.add(lblColor2);
+
+        lblColor3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        lblColor3.setOpaque(true);
+        jPanel2.add(lblColor3);
+
+        lblColor4.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        lblColor4.setOpaque(true);
+        jPanel2.add(lblColor4);
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -93,16 +199,16 @@ public class DiagGenPrueba extends javax.swing.JDialog {
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
                 .addContainerGap()
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 593, Short.MAX_VALUE)
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 593, Short.MAX_VALUE))
-                .addContainerGap())
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
+                    .add(org.jdesktop.layout.GroupLayout.LEADING, jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(org.jdesktop.layout.GroupLayout.LEADING, jPanel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 638, Short.MAX_VALUE))
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(layout.createSequentialGroup()
-                .add(59, 59, 59)
-                .add(jPanel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .add(jPanel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -110,6 +216,34 @@ public class DiagGenPrueba extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        buscarCombinacion();
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void btnReiniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReiniciarActionPerformed
+        reiniciarColores();
+    }//GEN-LAST:event_btnReiniciarActionPerformed
+
+    private void btnCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarActionPerformed
+        cerrar();
+    }//GEN-LAST:event_btnCerrarActionPerformed
+
+    private void cmbColor1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbColor1ActionPerformed
+        cambiaColorLbl1();
+    }//GEN-LAST:event_cmbColor1ActionPerformed
+
+    private void cmbColor2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbColor2ActionPerformed
+        cambiaColorLbl2();
+    }//GEN-LAST:event_cmbColor2ActionPerformed
+
+    private void cmbColor3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbColor3ActionPerformed
+        cambiaColorLbl3();
+    }//GEN-LAST:event_cmbColor3ActionPerformed
+
+    private void cmbColor4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbColor4ActionPerformed
+        cambiaColorLbl4();
+    }//GEN-LAST:event_cmbColor4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -151,6 +285,8 @@ public class DiagGenPrueba extends javax.swing.JDialog {
                     }
                 });
                 dialog.setVisible(true);
+                dialog.dispose();
+                System.exit(0);
             }
         });
     }
@@ -158,16 +294,20 @@ public class DiagGenPrueba extends javax.swing.JDialog {
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnCerrar;
     private javax.swing.JButton btnReiniciar;
+    private javax.swing.JComboBox cmbColor1;
+    private javax.swing.JComboBox cmbColor2;
+    private javax.swing.JComboBox cmbColor3;
+    private javax.swing.JComboBox cmbColor4;
     private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox jComboBox1;
-    private javax.swing.JComboBox jComboBox2;
-    private javax.swing.JComboBox jComboBox3;
-    private javax.swing.JComboBox jComboBox4;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JLabel lblColor1;
+    private javax.swing.JLabel lblColor2;
+    private javax.swing.JLabel lblColor3;
+    private javax.swing.JLabel lblColor4;
     // End of variables declaration//GEN-END:variables
 }

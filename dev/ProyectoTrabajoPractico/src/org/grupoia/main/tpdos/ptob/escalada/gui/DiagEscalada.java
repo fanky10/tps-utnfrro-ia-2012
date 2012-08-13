@@ -13,6 +13,7 @@ package org.grupoia.main.tpdos.ptob.escalada.gui;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
+import org.grupoia.main.tpdos.mockedobjects.MockedPosiciones;
 import org.grupoia.main.tpdos.ptob.escalada.Escalador;
 import org.grupoia.main.tpdos.ptob.escalada.Posicion;
 
@@ -24,8 +25,8 @@ public class DiagEscalada extends javax.swing.JDialog {
 
     private List<Posicion> movimientos = new ArrayList<Posicion>();
     private static final Integer CELDA = 25;
-    private Posicion pActual = new Posicion(1, 2);
-    private Posicion pObjetivo = new Posicion(5, 7);
+    private Posicion pActual = MockedPosiciones.getPosicionInicial();
+    private Posicion pObjetivo = MockedPosiciones.getPosicionObjetivo();
     private PnlTablero tablero;
 
     /** Creates new form DiagEscalada */
@@ -59,25 +60,47 @@ public class DiagEscalada extends javax.swing.JDialog {
     private void siguienteMovimiento() {
         if (pActual != null) {
             pActual = Escalador.buscaNuevaPosicion(pActual, pObjetivo);
-            if (pActual != null) {
-                movimientos.add(pActual);
-                generaTablero();
+            Posicion proximaPosicion = Escalador.buscaNuevaPosicion(pActual, pObjetivo);
+            generaTablero();
+            if (proximaPosicion == null) {
+                btnNextMove.setEnabled(false);
+                javax.swing.JOptionPane.showMessageDialog(rootPane, "Hemos llegado al objetivo, reinicie el juego");
             }
-        }else{
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(rootPane, "Hemos llegado al objetivo, reinicie el juego");
             btnNextMove.setEnabled(false);
         }
     }
-    private void actualizaPosicion(){
-        Integer posicionX = Integer.parseInt(txtPosicionX.getText());
-        Integer posicionY = Integer.parseInt(txtPosicionY.getText());
-        if(rbPosicionActual.isSelected()){
-            pActual = new Posicion(posicionX, posicionY);
+
+    private void actualizaPosicion() {
+        try {
+            Integer posicionX = Integer.parseInt(txtPosicionX.getText());
+
+            Integer posicionY = Integer.parseInt(txtPosicionY.getText());
+            if (posicionX > (PnlTablero.TAM - 1)) {
+                javax.swing.JOptionPane.showMessageDialog(rootPane, "ingrese una posicion de 0 a " + (PnlTablero.TAM - 1));
+                return ;
+            }
+            if (posicionY > (PnlTablero.TAM - 1)) {
+                javax.swing.JOptionPane.showMessageDialog(rootPane, "ingrese una posicion de 0 a " + (PnlTablero.TAM - 1));
+                return ;
+            }
+            if (rbPosicionActual.isSelected()) {
+                pActual = new Posicion(posicionX, posicionY);
+            } else if (rbPosicionObjetivo.isSelected()) {
+                pObjetivo = new Posicion(posicionX, posicionY);
+            } else {
+                throw new IllegalArgumentException("radio button not supported ");
+            }
+            generaTablero();
+        } catch (NumberFormatException ex) {
         }
-        else if(rbPosicionObjetivo.isSelected()){
-            pObjetivo = new Posicion(posicionX, posicionY);
-        }else{
-            throw new IllegalArgumentException("radio button not supported ");
-        }
+    }
+
+    private void reiniciarPosiciones() {
+        btnNextMove.setEnabled(true);
+        pActual = MockedPosiciones.getPosicionInicial();
+        pObjetivo = MockedPosiciones.getPosicionObjetivo();
         generaTablero();
     }
 
@@ -103,6 +126,8 @@ public class DiagEscalada extends javax.swing.JDialog {
         btnActualizarPosicion = new javax.swing.JButton();
         btnNextMove = new javax.swing.JButton();
         btnReiniciar = new javax.swing.JButton();
+        jPanel5 = new javax.swing.JPanel();
+        btnCerrar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -124,6 +149,9 @@ public class DiagEscalada extends javax.swing.JDialog {
         jPanel1.add(jPanel2);
 
         txtPosicionX.setText("Posicion X");
+        txtPosicionX.setDragEnabled(false);
+        txtPosicionX.setPreferredSize(new java.awt.Dimension(80, 30));
+        txtPosicionX.setSize(new java.awt.Dimension(80, 30));
         txtPosicionX.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 txtPosicionXFocusGained(evt);
@@ -135,6 +163,8 @@ public class DiagEscalada extends javax.swing.JDialog {
         jPanel3.add(jPanel4);
 
         txtPosicionY.setText("Posicion Y");
+        txtPosicionY.setPreferredSize(new java.awt.Dimension(80, 30));
+        txtPosicionY.setSize(new java.awt.Dimension(80, 30));
         txtPosicionY.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 txtPosicionYFocusGained(evt);
@@ -161,7 +191,20 @@ public class DiagEscalada extends javax.swing.JDialog {
         jPanel1.add(btnNextMove);
 
         btnReiniciar.setText("Reiniciar");
+        btnReiniciar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReiniciarActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnReiniciar);
+
+        btnCerrar.setText("Cerrar");
+        btnCerrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCerrarActionPerformed(evt);
+            }
+        });
+        jPanel5.add(btnCerrar);
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -169,19 +212,21 @@ public class DiagEscalada extends javax.swing.JDialog {
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
                 .addContainerGap()
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                    .add(org.jdesktop.layout.GroupLayout.LEADING, jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE)
-                    .add(org.jdesktop.layout.GroupLayout.LEADING, pnlTablero, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 500, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE)
+                    .add(pnlTablero, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 500, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel5, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 540, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 152, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(pnlTablero, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 500, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .add(jPanel5, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -202,6 +247,14 @@ public class DiagEscalada extends javax.swing.JDialog {
     private void txtPosicionYFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtPosicionYFocusGained
         txtPosicionY.selectAll();
     }//GEN-LAST:event_txtPosicionYFocusGained
+
+    private void btnReiniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReiniciarActionPerformed
+        reiniciarPosiciones();
+    }//GEN-LAST:event_btnReiniciarActionPerformed
+
+    private void btnCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btnCerrarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -248,6 +301,7 @@ public class DiagEscalada extends javax.swing.JDialog {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizarPosicion;
+    private javax.swing.JButton btnCerrar;
     private javax.swing.JButton btnNextMove;
     private javax.swing.JButton btnReiniciar;
     private javax.swing.ButtonGroup buttonGroup1;
@@ -255,6 +309,7 @@ public class DiagEscalada extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel pnlTablero;
     private javax.swing.JRadioButton rbPosicionActual;
     private javax.swing.JRadioButton rbPosicionObjetivo;

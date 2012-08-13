@@ -55,7 +55,12 @@ public class Escalador {
     public Posicion muevePosicionY(Integer movimiento) {
         return new Posicion(getPosicionActual().getX(), getPosicionActual().getY()+movimiento);
     }
-    
+    /**
+     * 
+     * @param pActual
+     * @param pObjetivo
+     * @return una mejor posicion, null si la actual es la mejor.
+     */
     public static Posicion buscaNuevaPosicion(Posicion pActual,Posicion pObjetivo){
         Escalador escalador = new Escalador(pActual, pObjetivo);
         debug("\tevaluando X");

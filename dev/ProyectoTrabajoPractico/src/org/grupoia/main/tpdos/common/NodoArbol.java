@@ -37,7 +37,7 @@ public class NodoArbol {
 
     @Override
     public String toString() {
-        return this.getClass().getName() + " value: " + value;
+        return this.getClass().getSimpleName() + " value: " + value;
     }
     @Override
     public boolean equals(Object object){

@@ -37,7 +37,8 @@ public class DiagPrimero extends javax.swing.JDialog {
 
     private void init() {
         dynamicTree = new MyDynamicTree();
-        populateTree(dynamicTree);
+//        populateTree(dynamicTree);
+        addNodos(dynamicTree);
         treePanel.add(dynamicTree);
     }
 
@@ -58,62 +59,30 @@ public class DiagPrimero extends javax.swing.JDialog {
         treePanel.addObject(p2, c1Name);
         treePanel.addObject(p2, c2Name);
     }
-    // como agrego mis nodos customizados?
+    //Agrego mis nodos customizados
     private void addNodos(MyDynamicTree treePanel) {
-        String p1Name = new String("Parent 1");
-        String p2Name = new String("Parent 2");
-        
-        DefaultMutableTreeNode p1, p2;
-
-        p1 = treePanel.addObject(null, p1Name);
-        p2 = treePanel.addObject(null, p2Name);
-        
-        String c1Name = new String("Child 1");
-        String c2Name = new String("Child 2");
-
-        treePanel.addObject(p1, c1Name);
-        treePanel.addObject(p1, c2Name);
-
-        treePanel.addObject(p2, c1Name);
-        treePanel.addObject(p2, c2Name);
-        
         NodoArbol raiz = generaArbol();
-        if(raiz.hasChildren()){
-            DefaultMutableTreeNode dmtParent = treePanel.addObject(null,raiz);
+        DefaultMutableTreeNode tRoot = treePanel.addObject(null,raiz);
+        if(!raiz.getNodosHijos().isEmpty()){
             for(NodoArbol na: raiz.getNodosHijos()){
-//                treePanel
+                addObject(treePanel, na, tRoot);
             }
         }
     }
-
-//    private void createNodes(DefaultMutableTreeNode top) {
-//        NodoArbol raiz = generaArbol();
-//        List<NodoArbol> ramas = raiz.getNodosHijos();
-//        //ver de hacer una recursiva (:
-//        for (NodoArbol r : ramas) {
-//            DefaultMutableTreeNode rama = new DefaultMutableTreeNode("Rama " + r.getValue());
-//            top.add(rama);
-//            for (NodoArbol hoja : r.getNodosHijos()) {
-//                rama.add(new DefaultMutableTreeNode(hoja));
-//            }
-//        }
-//    }
-//    //acceso recursivo a los objetos.
-//    private void agregarNodo(MyDynamicTree treePanel,NodoArbol parent, NodoArbol child){
-//        if(parent==null){
-//            agregarNodo(treePanel,child,null);
-//        }
-//        if(!nodo.hasChildren()){
-//            DefaultMutableTreeNode parent = treePanel.addObject(null, nodo);
-//            for(NodoArbol na: nodo.getNodosHijos()){
-//                agregarNodo(treePanel,na);
-//            }
-//        }
-//        
-//    }
+    private void addObject(MyDynamicTree dynTree,NodoArbol nodo, DefaultMutableTreeNode parent ){
+        if(!nodo.getNodosHijos().isEmpty()){
+            parent = dynTree.addObject(parent,nodo);
+            for(NodoArbol child: nodo.getNodosHijos()){
+               addObject(dynTree, child,parent ); 
+            }
+        }else{
+            dynTree.addObject(parent, nodo);//addObject(dynTree, nodo, parent);
+        }
+        
+    }
 
     public static Raiz generaArbol() {
-        //todas las hojas
+//        //todas las hojas
         List<NodoArbol> hojasIzq = new ArrayList<NodoArbol>();
         Hoja h = new Hoja(1);
         hojasIzq.add(h);

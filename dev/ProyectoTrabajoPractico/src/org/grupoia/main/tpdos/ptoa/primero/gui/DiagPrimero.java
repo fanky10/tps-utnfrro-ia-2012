@@ -17,6 +17,7 @@ import org.grupoia.main.tpdos.common.Hoja;
 import org.grupoia.main.tpdos.common.NodoArbol;
 import org.grupoia.main.tpdos.common.Raiz;
 import org.grupoia.main.tpdos.common.Rama;
+import org.grupoia.main.tpdos.mockedobjects.MockedArbol;
 
 /**
  *
@@ -61,50 +62,25 @@ public class DiagPrimero extends javax.swing.JDialog {
     }
     //Agrego mis nodos customizados
     private void addNodos(MyDynamicTree treePanel) {
-        NodoArbol raiz = generaArbol();
-        DefaultMutableTreeNode tRoot = treePanel.addObject(null,raiz);
-        if(!raiz.getNodosHijos().isEmpty()){
-            for(NodoArbol na: raiz.getNodosHijos()){
+        NodoArbol raiz = MockedArbol.generaArbol();
+        DefaultMutableTreeNode tRoot = treePanel.addObject(null, raiz);
+        if (!raiz.getNodosHijos().isEmpty()) {
+            for (NodoArbol na : raiz.getNodosHijos()) {
                 addObject(treePanel, na, tRoot);
             }
         }
     }
-    private void addObject(MyDynamicTree dynTree,NodoArbol nodo, DefaultMutableTreeNode parent ){
-        if(!nodo.getNodosHijos().isEmpty()){
-            parent = dynTree.addObject(parent,nodo);
-            for(NodoArbol child: nodo.getNodosHijos()){
-               addObject(dynTree, child,parent ); 
+
+    private void addObject(MyDynamicTree dynTree, NodoArbol nodo, DefaultMutableTreeNode parent) {
+        if (!nodo.getNodosHijos().isEmpty()) {
+            parent = dynTree.addObject(parent, nodo);
+            for (NodoArbol child : nodo.getNodosHijos()) {
+                addObject(dynTree, child, parent);
             }
-        }else{
+        } else {
             dynTree.addObject(parent, nodo);//addObject(dynTree, nodo, parent);
         }
-        
-    }
 
-    public static Raiz generaArbol() {
-//        //todas las hojas
-        List<NodoArbol> hojasIzq = new ArrayList<NodoArbol>();
-        Hoja h = new Hoja(1);
-        hojasIzq.add(h);
-        h = new Hoja(14);
-        hojasIzq.add(h);
-
-
-        List<NodoArbol> hojasDer = new ArrayList<NodoArbol>();
-        h = new Hoja(25);
-        hojasDer.add(h);
-        h = new Hoja(35);
-        hojasDer.add(h);
-
-        //ramas primer nivel
-        List<NodoArbol> ramas = new ArrayList<NodoArbol>();
-        Rama rIzq = new Rama(10, hojasIzq);
-        ramas.add(rIzq);
-        Rama rDer = new Rama(30, hojasDer);
-        ramas.add(rDer);
-
-        //raiz
-        return new Raiz(ramas);
     }
 
     private void eliminarNodo() {

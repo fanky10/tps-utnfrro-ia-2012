@@ -119,24 +119,24 @@ public class Buscaminas extends JFrame {
 		casillasVistas=0;
 		
 		//Pone diez minas
-//		for (int mina=0;mina < 10;mina++){
-//			//Busca una posición aleatoria donde no haya otra bomba
-//			int f,c;
-//			do{
-//				f=(int)(Math.random()*10);
-//				c=(int)(Math.random()*10);
-//			}while(tablero[f][c]==9);
-//			//Pone la bomba
-//			tablero[f][c]=9;
-//			//Recorre el contorno de la bomba e incrementa los contadores
-//			for (int f2=max(0, f-1);f2 < min(TAM,f+2);f2++){
-//				for (int c2=max(0,c-1);c2 < min(TAM,c+2);c2++){
-//					if (tablero[f2][c2]!=9){ //Si no es bomba
-//						tablero[f2][c2]++; //Incrementa el contador
-//					}
-//				}
-//			}
-//		}
+		for (int mina=0;mina < 10;mina++){
+			//Busca una posición aleatoria donde no haya otra bomba
+			int f,c;
+			do{
+				f=(int)(Math.random()*10);
+				c=(int)(Math.random()*10);
+			}while(tablero[f][c]==9);
+			//Pone la bomba
+			tablero[f][c]=9;
+			//Recorre el contorno de la bomba e incrementa los contadores
+			for (int f2=max(0, f-1);f2 < min(TAM,f+2);f2++){
+				for (int c2=max(0,c-1);c2 < min(TAM,c+2);c2++){
+					if (tablero[f2][c2]!=9){ //Si no es bomba
+						tablero[f2][c2]++; //Incrementa el contador
+					}
+				}
+			}
+		}
 	}
 	
 	public void update(Graphics g){

@@ -22,9 +22,7 @@ import org.grupoia.main.tpdos.ptob.escalada.Posicion;
  * @author fanky
  */
 public class DiagEscalada extends javax.swing.JDialog {
-
-    private List<Posicion> movimientos = new ArrayList<Posicion>();
-    private static final Integer CELDA = 25;
+    private static final String TITLE = "Escalada";
     private Posicion pActual = MockedPosiciones.getPosicionInicial();
     private Posicion pObjetivo = MockedPosiciones.getPosicionObjetivo();
     private PnlTablero tablero;
@@ -34,6 +32,7 @@ public class DiagEscalada extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         init();
+        setTitle(TITLE);
         setLocationRelativeTo(null);
     }
 

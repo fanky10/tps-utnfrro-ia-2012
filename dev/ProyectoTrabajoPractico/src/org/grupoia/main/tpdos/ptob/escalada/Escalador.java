@@ -4,14 +4,12 @@
  */
 package org.grupoia.main.tpdos.ptob.escalada;
 
-import java.awt.Dimension;
-
 /**
  *
  * @author Fanky10 <fanky10@gmail.com>
  */
 public class Escalador {
-    private static Boolean DEBUG = true;
+    public static Boolean DEBUG = true;
     private Posicion posicionActual;
     private Posicion posicionObjetivo;
 

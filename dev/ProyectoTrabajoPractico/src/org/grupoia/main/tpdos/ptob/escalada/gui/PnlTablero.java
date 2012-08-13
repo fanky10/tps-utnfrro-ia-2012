@@ -98,11 +98,10 @@ public class PnlTablero extends JPanel {
                     g.fillRect(x, y, constCelda, constCelda);
                 } else if (visible[f][c] == EstadoCelda.SIN_USO) {
                     g.setColor(Color.DARK_GRAY);
-                    g.drawRect(x, y, constCelda, constCelda);
                 }else{
                     g.setColor(Color.BLACK);
-                    g.drawRect(x, y, constCelda, constCelda);
                 }
+                g.drawRect(x, y, constCelda, constCelda);
             }
         }
     }

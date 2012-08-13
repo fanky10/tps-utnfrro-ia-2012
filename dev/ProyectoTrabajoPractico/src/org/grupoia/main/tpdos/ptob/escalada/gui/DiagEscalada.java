@@ -26,41 +26,44 @@ public class DiagEscalada extends javax.swing.JDialog {
     private static final Integer CELDA = 25;
     private Posicion pActual = new Posicion(1, 2);
     private Posicion pObjetivo = new Posicion(5, 7);
+    private PnlTablero tablero;
 
     /** Creates new form DiagEscalada */
     public DiagEscalada(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         init();
+        setLocationRelativeTo(null);
     }
 
     private void init() {
-        for (int i = 0; i < tblCuadricula.getRowCount(); i++) {
-            tblCuadricula.setRowHeight(i, CELDA);
-        }
-        for (int i = 0; i < tblCuadricula.getColumnCount(); i++) {
-            tblCuadricula.getColumnModel().getColumn(i).setWidth(CELDA);
-            tblCuadricula.getColumnModel().getColumn(i).setMaxWidth(CELDA);
-        }
+        generaTablero();
 
+    }
 
-        tblCuadricula.setValueAt("X", 0, 0);
+    private void generaTablero() {
+        tablero = new PnlTablero(pnlTablero.getSize());
+        pnlTablero.setSize(tablero.getSize());
+        pnlTablero.add(tablero);
+        pnlTablero.repaint();
+        muevePosicionActual();
+        tablero.muevePosicionObjetivo(pObjetivo.getX(), pObjetivo.getY());
+    }
+
+    private void muevePosicionActual() {
+        tablero.muevePosicionActual(pActual.getX(), pActual.getY());
     }
 
     private void siguienteMovimiento() {
         if (pActual != null) {
             pActual = Escalador.buscaNuevaPosicion(pActual, pObjetivo);
-            movimientos.add(pActual);
-            refreshTable();
+            if (pActual != null) {
+                movimientos.add(pActual);
+                muevePosicionActual();
+            }
+        }else{
+            btnNextMove.setEnabled(false);
         }
-    }
-
-    private void refreshTable() {
-        DefaultTableModel tmodel = new DefaultTableModel(new Object[]{"Posiciones"}, 0);
-        for (Posicion p : movimientos) {
-            tmodel.addRow(new Object[]{p});
-        }
-        tblCuadricula.setModel(tmodel);
     }
 
     /** This method is called from within the constructor to
@@ -72,31 +75,56 @@ public class DiagEscalada extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tblCuadricula = new javax.swing.JTable();
+        buttonGroup1 = new javax.swing.ButtonGroup();
+        pnlTablero = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        jRadioButton1 = new javax.swing.JRadioButton();
+        jRadioButton2 = new javax.swing.JRadioButton();
+        jPanel3 = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
+        jTextField1 = new javax.swing.JTextField();
+        jTextField2 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        btnNextMove = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        tblCuadricula.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane1.setViewportView(tblCuadricula);
+        pnlTablero.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        pnlTablero.setLayout(new java.awt.BorderLayout());
 
-        jButton1.setText("SiguienteMovimiento");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jPanel1.setLayout(new java.awt.GridLayout(0, 1));
+
+        buttonGroup1.add(jRadioButton1);
+        jRadioButton1.setText("Posicion Actual");
+        jPanel2.add(jRadioButton1);
+
+        buttonGroup1.add(jRadioButton2);
+        jRadioButton2.setText("Posicion Objetivo");
+        jPanel2.add(jRadioButton2);
+
+        jPanel1.add(jPanel2);
+
+        jTextField1.setText("jTextField1");
+        jPanel4.add(jTextField1);
+
+        jTextField2.setText("jTextField2");
+        jPanel4.add(jTextField2);
+
+        jPanel3.add(jPanel4);
+
+        jPanel1.add(jPanel3);
+
+        jButton1.setText("jButton1");
+        jPanel1.add(jButton1);
+
+        btnNextMove.setText("SiguienteMovimiento");
+        btnNextMove.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnNextMoveActionPerformed(evt);
             }
         });
+        jPanel1.add(btnNextMove);
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -104,29 +132,27 @@ public class DiagEscalada extends javax.swing.JDialog {
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
                 .addContainerGap()
-                .add(jButton1)
-                .addContainerGap(222, Short.MAX_VALUE))
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 375, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
+                    .add(org.jdesktop.layout.GroupLayout.LEADING, jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(org.jdesktop.layout.GroupLayout.LEADING, pnlTablero, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE))
+                .add(181, 181, 181))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
                 .addContainerGap()
-                .add(jButton1)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)
-                .addContainerGap())
+                .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 134, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(18, 18, 18)
+                .add(pnlTablero, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 500, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnNextMoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextMoveActionPerformed
         siguienteMovimiento();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnNextMoveActionPerformed
 
     /**
      * @param args the command line arguments
@@ -172,8 +198,17 @@ public class DiagEscalada extends javax.swing.JDialog {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnNextMove;
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton jButton1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tblCuadricula;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JRadioButton jRadioButton1;
+    private javax.swing.JRadioButton jRadioButton2;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JPanel pnlTablero;
     // End of variables declaration//GEN-END:variables
 }

@@ -38,10 +38,14 @@ public class NodoArbol {
     public boolean hasChildren() {
         return nodosHijosIt.hasNext();
     }
+    public void addChild(NodoArbol na){
+        nodosHijos.add(na);
+    }
 
     @Override
     public String toString() {
-        return this.getClass().getSimpleName() + " value: " + value;
+        String name = (nodosHijos.isEmpty()?"Hoja":"Rama");
+        return name + " value: " + value;
     }
 
     @Override

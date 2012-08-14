@@ -91,7 +91,14 @@ public class DiagPrimero extends javax.swing.JDialog {
     private void agregarNodo() {
         // primero buscarlo y seleccionarlo (?
         // si no lo encuentro, agregarlo jeje
-        dynamicTree.addObject(txtNodoNuevo.getText());
+        Integer value = Integer.parseInt(txtNodoNuevo.getText());
+        NodoArbol newNodo = new NodoArbol(value);
+        NodoArbol na = (NodoArbol) dynamicTree.getSelectedNode();
+        na.addChild(newNodo);
+        if (na != null) {
+            dynamicTree.addObject(newNodo);
+        }
+
     }
 
     private void buscarNodo() {

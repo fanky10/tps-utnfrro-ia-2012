@@ -14,4 +14,7 @@ public class Raiz extends NodoArbol{
     public Raiz(List<NodoArbol> nodosHijos){
         super(nodosHijos);
     }
+    public String toString(){
+        return "Raiz - "+value;
+    }
 }

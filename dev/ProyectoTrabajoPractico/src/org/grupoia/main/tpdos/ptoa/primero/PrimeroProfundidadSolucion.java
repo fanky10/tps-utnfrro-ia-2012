@@ -5,6 +5,7 @@
 package org.grupoia.main.tpdos.ptoa.primero;
 
 import org.grupoia.main.tpdos.common.NodoArbol;
+import org.grupoia.main.tpdos.mockedobjects.MockedArbol;
 
 /**
  * Se explora c/camino posible hacia el objetivo hasta su conclusion, antes de intentar otro camino.
@@ -30,22 +31,41 @@ public class PrimeroProfundidadSolucion extends AlgoritmoSolucion {
 
     @Override
     public NodoArbol buscarObjetivo(NodoArbol nodo, NodoArbol objetivo) {
+        debug("buscando nodo: "+objetivo);
         if (!nodo.getNodosHijos().isEmpty()) {
-            visitedList.add(nodo);
             if (nodo.equals(objetivo)) {
+                debug("encontrado: "+nodo);
                 return nodo;
             }
+            visitedList.add(nodo);
             for (NodoArbol na : nodo.getNodosHijos()) {
-                if(buscarObjetivo(na, objetivo)!=null){
-                    return na;
+                NodoArbol encontrado = buscarObjetivo(na, objetivo);
+                if(encontrado!=null){
+                    debug("encontrado: "+encontrado);
+                    return encontrado;
                 }
             }
         }
         //si llegue hasta aca, es hoja o finalizo con los bichos
         visitedList.add(nodo);
         if (nodo.equals(objetivo)) {
+            debug("encontrado: "+nodo);
             return nodo;
         }
+        debug("NO ENCONTRADO: nodo actual "+nodo);
         return null;
+    }
+    public static Boolean DEBUG = true;
+    
+    private static void debug(String text){
+        if(DEBUG){
+            System.out.println("DEBUG: "+text);
+        }
+    }
+    public static void main(String args[]){
+        AlgoritmoSolucion solucion = new PrimeroProfundidadSolucion();
+        NodoArbol encontrado = solucion.buscarObjetivo(MockedArbol.generaArbol(), new NodoArbol(25));
+        System.out.println("encontrado!: "+encontrado);
+        solucion.printVisited();
     }
 }

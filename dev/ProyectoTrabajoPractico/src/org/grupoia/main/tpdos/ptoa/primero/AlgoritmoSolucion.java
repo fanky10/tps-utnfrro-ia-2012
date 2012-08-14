@@ -21,4 +21,9 @@ public abstract class AlgoritmoSolucion {
             System.out.println("visited: "+na);
         }
     }
+
+    public List<NodoArbol> getVisitedList() {
+        return visitedList;
+    }
+    
 }

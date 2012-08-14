@@ -60,9 +60,12 @@ public class MyDynamicTree extends JPanel {
     private Toolkit toolkit = Toolkit.getDefaultToolkit();
 
     public MyDynamicTree() {
+        this(new DefaultMutableTreeNode("Root Node"));
+    }
+    public MyDynamicTree(DefaultMutableTreeNode rootNode) {
         super(new GridLayout(1, 0));
 
-        rootNode = new DefaultMutableTreeNode("Root Node");
+        this.rootNode = rootNode;
         treeModel = new DefaultTreeModel(rootNode);
         treeModel.addTreeModelListener(new MyTreeModelListener());
         tree = new JTree(treeModel);

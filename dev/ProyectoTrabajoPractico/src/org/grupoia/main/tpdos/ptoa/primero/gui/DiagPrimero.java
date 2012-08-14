@@ -10,14 +10,15 @@
  */
 package org.grupoia.main.tpdos.ptoa.primero.gui;
 
-import java.util.ArrayList;
 import java.util.List;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.grupoia.main.tpdos.common.Hoja;
 import org.grupoia.main.tpdos.common.NodoArbol;
-import org.grupoia.main.tpdos.common.Raiz;
-import org.grupoia.main.tpdos.common.Rama;
 import org.grupoia.main.tpdos.mockedobjects.MockedArbol;
+import org.grupoia.main.tpdos.ptoa.primero.AlgoritmoSolucion;
+import org.grupoia.main.tpdos.ptoa.primero.PrimeroAnchuraSolucion;
+import org.grupoia.main.tpdos.ptoa.primero.PrimeroProfundidadSolucion;
 
 /**
  *
@@ -27,6 +28,7 @@ public class DiagPrimero extends javax.swing.JDialog {
 
     private static final Boolean DEBUG = true;
     private MyDynamicTree dynamicTree = null;
+    private NodoArbol raiz = MockedArbol.generaArbol();
 
     /** Creates new form DiagPrimero */
     public DiagPrimero(java.awt.Frame parent, boolean modal) {
@@ -37,10 +39,23 @@ public class DiagPrimero extends javax.swing.JDialog {
     }
 
     private void init() {
-        dynamicTree = new MyDynamicTree();
+        dynamicTree = new MyDynamicTree(new DefaultMutableTreeNode(raiz));
 //        populateTree(dynamicTree);
         addNodos(dynamicTree);
         treePanel.add(dynamicTree);
+        refrescaTabla(null);
+    }
+    private void refrescaTabla(List<NodoArbol> visitados){
+        DefaultTableModel tableModel = new DefaultTableModel();
+        if(visitados==null || visitados.isEmpty()){
+            tableModel.setColumnIdentifiers(new String[]{"Busque un nodo"});
+        }else{
+            tableModel.setColumnIdentifiers(new String[]{"Nodo Visitado"});
+            for(NodoArbol na: visitados){
+                tableModel.addRow(new Object[]{na});
+            }
+        }
+        tblRuta.setModel(tableModel);
     }
 
     public void populateTree(MyDynamicTree treePanel) {
@@ -61,12 +76,12 @@ public class DiagPrimero extends javax.swing.JDialog {
         treePanel.addObject(p2, c2Name);
     }
     //Agrego mis nodos customizados
+
     private void addNodos(MyDynamicTree treePanel) {
-        NodoArbol raiz = MockedArbol.generaArbol();
-        DefaultMutableTreeNode tRoot = treePanel.addObject(null, raiz);
+
         if (!raiz.getNodosHijos().isEmpty()) {
             for (NodoArbol na : raiz.getNodosHijos()) {
-                addObject(treePanel, na, tRoot);
+                addObject(treePanel, na, null);//default
             }
         }
     }
@@ -94,6 +109,26 @@ public class DiagPrimero extends javax.swing.JDialog {
     }
 
     private void buscarNodo() {
+        Integer value = Integer.parseInt(txtNodoObjetivo.getText());
+        NodoArbol objetivo = new Hoja(value);
+        AlgoritmoSolucion solucion = null;
+        if (rbAnchura.isSelected()) {
+            solucion = new PrimeroAnchuraSolucion();
+        } else if (rbProfundidad.isSelected()) {
+            solucion = new PrimeroProfundidadSolucion();
+        } else {
+            throw new IllegalArgumentException("radio button invalido (? jaja");
+        }
+        NodoArbol encontrado = solucion.buscarObjetivo(raiz, objetivo);
+        System.out.println("encontrado!: "+encontrado);
+        
+        refrescaTabla(solucion.getVisitedList());
+        // TODO: print visited
+        if (encontrado != null) {
+            javax.swing.JOptionPane.showMessageDialog(rootPane, "Objetivo encontrado!: " + encontrado);
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(rootPane, "Objetivo no encontrado :( ");
+        }
     }
 
     private void cerrar() {
@@ -122,8 +157,10 @@ public class DiagPrimero extends javax.swing.JDialog {
         jButton4 = new javax.swing.JButton();
         treePanel = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
+        rbProfundidad = new javax.swing.JRadioButton();
+        rbAnchura = new javax.swing.JRadioButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblRuta = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -233,7 +270,7 @@ public class DiagPrimero extends javax.swing.JDialog {
                 .add(jPanel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 100, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jPanel3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(167, Short.MAX_VALUE))
+                .addContainerGap(203, Short.MAX_VALUE))
         );
 
         jButton4.setText("Cerrar");
@@ -247,14 +284,27 @@ public class DiagPrimero extends javax.swing.JDialog {
         treePanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         treePanel.setLayout(new java.awt.BorderLayout());
 
-        buttonGroup1.add(jRadioButton1);
-        jRadioButton1.setSelected(true);
-        jRadioButton1.setText("Primero Profundidad");
-        jPanel5.add(jRadioButton1);
+        buttonGroup1.add(rbProfundidad);
+        rbProfundidad.setSelected(true);
+        rbProfundidad.setText("Primero Profundidad");
+        jPanel5.add(rbProfundidad);
 
-        buttonGroup1.add(jRadioButton2);
-        jRadioButton2.setText("Primero Anchura");
-        jPanel5.add(jRadioButton2);
+        buttonGroup1.add(rbAnchura);
+        rbAnchura.setText("Primero Anchura");
+        jPanel5.add(rbAnchura);
+
+        tblRuta.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(tblRuta);
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -262,23 +312,26 @@ public class DiagPrimero extends javax.swing.JDialog {
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
                 .addContainerGap()
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jPanel4, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 578, Short.MAX_VALUE)
-                    .add(layout.createSequentialGroup()
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
+                    .add(org.jdesktop.layout.GroupLayout.LEADING, jPanel5, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(org.jdesktop.layout.GroupLayout.LEADING, jPanel4, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(org.jdesktop.layout.GroupLayout.LEADING, layout.createSequentialGroup()
                         .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(treePanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE))
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel5, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 578, Short.MAX_VALUE))
+                        .add(treePanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 324, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 310, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
-                .add(20, 20, 20)
+                .addContainerGap()
                 .add(jPanel5, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(treePanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 365, Short.MAX_VALUE)
+                    .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 401, Short.MAX_VALUE)
+                    .add(treePanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 401, Short.MAX_VALUE)
                     .add(jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jPanel4, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
@@ -375,8 +428,10 @@ public class DiagPrimero extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JRadioButton rbAnchura;
+    private javax.swing.JRadioButton rbProfundidad;
+    private javax.swing.JTable tblRuta;
     private javax.swing.JPanel treePanel;
     private javax.swing.JTextField txtNodoNuevo;
     private javax.swing.JTextField txtNodoObjetivo;

@@ -27,8 +27,18 @@ public class MockedArbol {
         List<NodoArbol> hojasIzq = new ArrayList<NodoArbol>();
         Hoja h = new Hoja(1);
         hojasIzq.add(h);
-        h = new Hoja(14);
-        hojasIzq.add(h);
+        
+        //muchas hojitas (:
+        hojasIzq.add(new NodoArbol(110));
+        hojasIzq.add(new NodoArbol(101));
+        //una rama
+        NodoArbol na = new NodoArbol(210);
+        hojasIzq.add(na);
+        h = new Hoja(220);
+        na.addChild(h);
+        h.addChild(new Hoja(14));
+        
+        
 
 
         List<NodoArbol> hojasDer = new ArrayList<NodoArbol>();
@@ -43,6 +53,8 @@ public class MockedArbol {
         ramas.add(rIzq);
         Rama rDer = new Rama(30, hojasDer);
         ramas.add(rDer);
+        h = new Hoja(141);
+        ramas.add(h);
 
         //raiz
         return new Raiz(ramas);

@@ -85,42 +85,53 @@ public class DiagPrimero extends javax.swing.JDialog {
     }
 
     private void eliminarNodo() {
+
         dynamicTree.removeCurrentNode();
     }
 
     private void agregarNodo() {
         // primero buscarlo y seleccionarlo (?
         // si no lo encuentro, agregarlo jeje
-        Integer value = Integer.parseInt(txtNodoNuevo.getText());
-        NodoArbol newNodo = new NodoArbol(value);
-        NodoArbol na = (NodoArbol) dynamicTree.getSelectedNode();
-        na.addChild(newNodo);
-        if (na != null) {
-            dynamicTree.addObject(newNodo);
+        try {
+            Integer value = Integer.parseInt(txtNodo.getText());
+            NodoArbol newNodo = new NodoArbol(value);
+            NodoArbol na = (NodoArbol) dynamicTree.getSelectedNode();
+            na.addChild(newNodo);
+            if (na != null) {
+                dynamicTree.addObject(newNodo);
+            }
+        } catch (NumberFormatException ex) {
+            //ignored
+            javax.swing.JOptionPane.showMessageDialog(rootPane, "Ingrese numero valido (:");
         }
 
     }
 
     private void buscarNodo() {
-        Integer value = Integer.parseInt(txtNodoObjetivo.getText());
-        NodoArbol objetivo = new Hoja(value);
-        AlgoritmoSolucion solucion = null;
-        if (rbAnchura.isSelected()) {
-            solucion = new PrimeroAnchuraSolucion();
-        } else if (rbProfundidad.isSelected()) {
-            solucion = new PrimeroProfundidadSolucion();
-        } else {
-            throw new IllegalArgumentException("radio button invalido (? jaja");
-        }
-        NodoArbol encontrado = solucion.buscarObjetivo(raiz, objetivo);
-        System.out.println("encontrado!: " + encontrado);
+        try {
+            Integer value = Integer.parseInt(txtNodo.getText());
+            NodoArbol objetivo = new Hoja(value);
+            AlgoritmoSolucion solucion = null;
+            if (rbAnchura.isSelected()) {
+                solucion = new PrimeroAnchuraSolucion();
+            } else if (rbProfundidad.isSelected()) {
+                solucion = new PrimeroProfundidadSolucion();
+            } else {
+                throw new IllegalArgumentException("radio button invalido (? jaja");
+            }
+            NodoArbol encontrado = solucion.buscarObjetivo(raiz, objetivo);
+            System.out.println("encontrado!: " + encontrado);
 
-        refrescaTabla(solucion.getVisitedList());
-        // TODO: print visited
-        if (encontrado != null) {
-            javax.swing.JOptionPane.showMessageDialog(rootPane, "Objetivo encontrado!: " + encontrado);
-        } else {
-            javax.swing.JOptionPane.showMessageDialog(rootPane, "Objetivo no encontrado :( ");
+            refrescaTabla(solucion.getVisitedList());
+            // TODO: print visited
+            if (encontrado != null) {
+                javax.swing.JOptionPane.showMessageDialog(rootPane, "Objetivo encontrado!: " + encontrado);
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(rootPane, "Objetivo no encontrado :( ");
+            }
+        } catch (NumberFormatException ex) {
+            //ignored
+            javax.swing.JOptionPane.showMessageDialog(rootPane, "Ingrese numero valido (:");
         }
     }
 
@@ -141,19 +152,16 @@ public class DiagPrimero extends javax.swing.JDialog {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         btnAgregarNodo = new javax.swing.JButton();
-        btnEliminarNodo = new javax.swing.JButton();
-        txtNodoNuevo = new javax.swing.JTextField();
-        jPanel3 = new javax.swing.JPanel();
-        txtNodoObjetivo = new javax.swing.JTextField();
+        txtNodo = new javax.swing.JTextField();
         btnBuscarNodo = new javax.swing.JButton();
-        jPanel4 = new javax.swing.JPanel();
-        jButton4 = new javax.swing.JButton();
-        treePanel = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         rbProfundidad = new javax.swing.JRadioButton();
         rbAnchura = new javax.swing.JRadioButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblRuta = new javax.swing.JTable();
+        jPanel4 = new javax.swing.JPanel();
+        jButton4 = new javax.swing.JButton();
+        treePanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -168,58 +176,15 @@ public class DiagPrimero extends javax.swing.JDialog {
             }
         });
 
-        btnEliminarNodo.setText("Eliminar");
-        btnEliminarNodo.addActionListener(new java.awt.event.ActionListener() {
+        txtNodo.setText("Nodo");
+        txtNodo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEliminarNodoActionPerformed(evt);
+                txtNodoActionPerformed(evt);
             }
         });
-
-        txtNodoNuevo.setText("Nodo");
-        txtNodoNuevo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNodoNuevoActionPerformed(evt);
-            }
-        });
-        txtNodoNuevo.addFocusListener(new java.awt.event.FocusAdapter() {
+        txtNodo.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
-                txtNodoNuevoFocusGained(evt);
-            }
-        });
-
-        org.jdesktop.layout.GroupLayout jPanel2Layout = new org.jdesktop.layout.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(txtNodoNuevo, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
-            .add(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .add(btnAgregarNodo)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(btnEliminarNodo))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jPanel2Layout.createSequentialGroup()
-                .add(txtNodoNuevo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(btnAgregarNodo)
-                    .add(btnEliminarNodo))
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Busqueda"));
-
-        txtNodoObjetivo.setText("Nodo Objetivo");
-        txtNodoObjetivo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNodoObjetivoActionPerformed(evt);
-            }
-        });
-        txtNodoObjetivo.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                txtNodoObjetivoFocusGained(evt);
+                txtNodoFocusGained(evt);
             }
         });
 
@@ -230,53 +195,6 @@ public class DiagPrimero extends javax.swing.JDialog {
             }
         });
 
-        org.jdesktop.layout.GroupLayout jPanel3Layout = new org.jdesktop.layout.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, txtNodoObjetivo, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
-            .add(jPanel3Layout.createSequentialGroup()
-                .add(btnBuscarNodo)
-                .addContainerGap())
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jPanel3Layout.createSequentialGroup()
-                .add(txtNodoObjetivo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(btnBuscarNodo))
-        );
-
-        org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jPanel1Layout.createSequentialGroup()
-                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
-                    .add(org.jdesktop.layout.GroupLayout.LEADING, jPanel3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(org.jdesktop.layout.GroupLayout.LEADING, jPanel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jPanel1Layout.createSequentialGroup()
-                .add(jPanel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 100, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jPanel3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(203, Short.MAX_VALUE))
-        );
-
-        jButton4.setText("Cerrar");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
-        jPanel4.add(jButton4);
-
-        treePanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        treePanel.setLayout(new java.awt.BorderLayout());
-
         buttonGroup1.add(rbProfundidad);
         rbProfundidad.setSelected(true);
         rbProfundidad.setText("Primero Profundidad");
@@ -285,6 +203,34 @@ public class DiagPrimero extends javax.swing.JDialog {
         buttonGroup1.add(rbAnchura);
         rbAnchura.setText("Primero Anchura");
         jPanel5.add(rbAnchura);
+
+        org.jdesktop.layout.GroupLayout jPanel2Layout = new org.jdesktop.layout.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(jPanel2Layout.createSequentialGroup()
+                .add(btnBuscarNodo)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .add(btnAgregarNodo)
+                .add(260, 260, 260))
+            .add(jPanel2Layout.createSequentialGroup()
+                .add(jPanel5, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 418, Short.MAX_VALUE)
+                .addContainerGap())
+            .add(jPanel2Layout.createSequentialGroup()
+                .add(txtNodo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 409, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(29, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(jPanel2Layout.createSequentialGroup()
+                .add(txtNodo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jPanel5, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(btnBuscarNodo)
+                    .add(btnAgregarNodo)))
+        );
 
         tblRuta.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -299,32 +245,52 @@ public class DiagPrimero extends javax.swing.JDialog {
         ));
         jScrollPane1.setViewportView(tblRuta);
 
+        org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(jPanel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(jPanel1Layout.createSequentialGroup()
+                .add(jPanel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 341, Short.MAX_VALUE))
+        );
+
+        jButton4.setText("Cerrar");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        jPanel4.add(jButton4);
+
+        treePanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        treePanel.setLayout(new java.awt.BorderLayout());
+
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
                 .addContainerGap()
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
-                    .add(org.jdesktop.layout.GroupLayout.LEADING, jPanel5, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(org.jdesktop.layout.GroupLayout.LEADING, jPanel4, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(org.jdesktop.layout.GroupLayout.LEADING, layout.createSequentialGroup()
-                        .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(layout.createSequentialGroup()
                         .add(treePanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 324, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 310, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                        .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(jPanel4, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 780, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
-                .addContainerGap()
-                .add(jPanel5, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 401, Short.MAX_VALUE)
-                    .add(treePanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 401, Short.MAX_VALUE)
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                    .add(treePanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .add(jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jPanel4, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
@@ -333,33 +299,21 @@ public class DiagPrimero extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnEliminarNodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarNodoActionPerformed
-        eliminarNodo();
-    }//GEN-LAST:event_btnEliminarNodoActionPerformed
-
     private void btnAgregarNodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarNodoActionPerformed
         agregarNodo();
     }//GEN-LAST:event_btnAgregarNodoActionPerformed
 
-    private void txtNodoNuevoFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtNodoNuevoFocusGained
-        txtNodoNuevo.selectAll();
-    }//GEN-LAST:event_txtNodoNuevoFocusGained
+    private void txtNodoFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtNodoFocusGained
+        txtNodo.selectAll();
+    }//GEN-LAST:event_txtNodoFocusGained
 
-    private void txtNodoNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNodoNuevoActionPerformed
+    private void txtNodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNodoActionPerformed
         agregarNodo();
-    }//GEN-LAST:event_txtNodoNuevoActionPerformed
-
-    private void txtNodoObjetivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNodoObjetivoActionPerformed
-        buscarNodo();
-    }//GEN-LAST:event_txtNodoObjetivoActionPerformed
+    }//GEN-LAST:event_txtNodoActionPerformed
 
     private void btnBuscarNodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarNodoActionPerformed
         buscarNodo();
     }//GEN-LAST:event_btnBuscarNodoActionPerformed
-
-    private void txtNodoObjetivoFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtNodoObjetivoFocusGained
-        txtNodoObjetivo.selectAll();
-    }//GEN-LAST:event_txtNodoObjetivoFocusGained
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         cerrar();
@@ -413,12 +367,10 @@ public class DiagPrimero extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregarNodo;
     private javax.swing.JButton btnBuscarNodo;
-    private javax.swing.JButton btnEliminarNodo;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton jButton4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
@@ -426,7 +378,6 @@ public class DiagPrimero extends javax.swing.JDialog {
     private javax.swing.JRadioButton rbProfundidad;
     private javax.swing.JTable tblRuta;
     private javax.swing.JPanel treePanel;
-    private javax.swing.JTextField txtNodoNuevo;
-    private javax.swing.JTextField txtNodoObjetivo;
+    private javax.swing.JTextField txtNodo;
     // End of variables declaration//GEN-END:variables
 }

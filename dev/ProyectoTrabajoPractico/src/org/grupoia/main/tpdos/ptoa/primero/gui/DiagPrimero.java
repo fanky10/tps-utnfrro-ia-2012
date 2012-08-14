@@ -308,7 +308,7 @@ public class DiagPrimero extends javax.swing.JDialog {
     }//GEN-LAST:event_txtNodoFocusGained
 
     private void txtNodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNodoActionPerformed
-        agregarNodo();
+        buscarNodo();
     }//GEN-LAST:event_txtNodoActionPerformed
 
     private void btnBuscarNodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarNodoActionPerformed

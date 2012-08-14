@@ -26,6 +26,7 @@ import org.grupoia.main.tpdos.ptoa.primero.PrimeroProfundidadSolucion;
  */
 public class DiagPrimero extends javax.swing.JDialog {
 
+    private static final String TITLE = "Primero Anchura / Profundidad";
     private static final Boolean DEBUG = true;
     private MyDynamicTree dynamicTree = null;
     private NodoArbol raiz = MockedArbol.generaArbol();
@@ -35,48 +36,33 @@ public class DiagPrimero extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         init();
+        setTitle(TITLE);
         setLocationRelativeTo(null);
     }
 
     private void init() {
+        PrimeroProfundidadSolucion.DEBUG = false;
+        PrimeroAnchuraSolucion.DEBUG = false;
         dynamicTree = new MyDynamicTree(new DefaultMutableTreeNode(raiz));
-//        populateTree(dynamicTree);
         addNodos(dynamicTree);
         treePanel.add(dynamicTree);
         refrescaTabla(null);
     }
-    private void refrescaTabla(List<NodoArbol> visitados){
+
+    private void refrescaTabla(List<NodoArbol> visitados) {
         DefaultTableModel tableModel = new DefaultTableModel();
-        if(visitados==null || visitados.isEmpty()){
+        if (visitados == null || visitados.isEmpty()) {
             tableModel.setColumnIdentifiers(new String[]{"Busque un nodo"});
-        }else{
+        } else {
             tableModel.setColumnIdentifiers(new String[]{"Nodo Visitado"});
-            for(NodoArbol na: visitados){
+            for (NodoArbol na : visitados) {
                 tableModel.addRow(new Object[]{na});
             }
         }
         tblRuta.setModel(tableModel);
     }
 
-    public void populateTree(MyDynamicTree treePanel) {
-        String p1Name = new String("Parent 1");
-        String p2Name = new String("Parent 2");
-        String c1Name = new String("Child 1");
-        String c2Name = new String("Child 2");
-
-        DefaultMutableTreeNode p1, p2;
-
-        p1 = treePanel.addObject(null, p1Name);
-        p2 = treePanel.addObject(null, p2Name);
-
-        treePanel.addObject(p1, c1Name);
-        treePanel.addObject(p1, c2Name);
-
-        treePanel.addObject(p2, c1Name);
-        treePanel.addObject(p2, c2Name);
-    }
     //Agrego mis nodos customizados
-
     private void addNodos(MyDynamicTree treePanel) {
 
         if (!raiz.getNodosHijos().isEmpty()) {
@@ -120,8 +106,8 @@ public class DiagPrimero extends javax.swing.JDialog {
             throw new IllegalArgumentException("radio button invalido (? jaja");
         }
         NodoArbol encontrado = solucion.buscarObjetivo(raiz, objetivo);
-        System.out.println("encontrado!: "+encontrado);
-        
+        System.out.println("encontrado!: " + encontrado);
+
         refrescaTabla(solucion.getVisitedList());
         // TODO: print visited
         if (encontrado != null) {

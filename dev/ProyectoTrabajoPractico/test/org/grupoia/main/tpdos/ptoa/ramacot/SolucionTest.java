@@ -8,6 +8,8 @@ import org.grupoia.main.tpdos.ptoa.primero.PrimeroProfundidadSolucion;
 import org.grupoia.main.tpdos.ptoa.primero.PrimeroAnchuraSolucion;
 import org.grupoia.main.tpdos.common.Raiz;
 import org.grupoia.main.mockedobjects.MockedArbol;
+import org.grupoia.main.tpdos.common.Hoja;
+import org.grupoia.main.tpdos.common.NodoArbol;
 import org.junit.Test;
 
 /**
@@ -28,5 +30,10 @@ public class SolucionTest extends BaseTest{
         Raiz raiz = MockedArbol.generaArbol();
         this.testBuscaObjetivoValido(new PrimeroProfundidadSolucion(), raiz, MockedArbol.getNodoArbolValido());
         this.testBuscaObjetivoInvalido(new PrimeroProfundidadSolucion(), raiz, MockedArbol.getNodoArbolInvalido());
+        
+    }
+    @Test
+    public void primeroProdundidadCustomTest(){
+        this.testBuscaObjetivoValido(new PrimeroProfundidadSolucion(), MockedArbol.generaArbol(), new Hoja(1));
     }
 }

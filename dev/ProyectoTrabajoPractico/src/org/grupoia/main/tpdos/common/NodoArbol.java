@@ -21,6 +21,10 @@ public class NodoArbol {
         this(0, nodosHijos);
     }
 
+    public NodoArbol(Integer value) {
+        this(value, new java.util.ArrayList<NodoArbol>());
+    }
+
     public NodoArbol(Integer value, List<NodoArbol> nodosHijos) {
         this.value = value;
         this.nodosHijos = nodosHijos;
@@ -39,9 +43,10 @@ public class NodoArbol {
     public String toString() {
         return this.getClass().getSimpleName() + " value: " + value;
     }
+
     @Override
-    public boolean equals(Object object){
-        if(object instanceof NodoArbol){
+    public boolean equals(Object object) {
+        if (object instanceof NodoArbol) {
             NodoArbol objetivo = (NodoArbol) object;
             return this.getValue() == objetivo.getValue();
         }

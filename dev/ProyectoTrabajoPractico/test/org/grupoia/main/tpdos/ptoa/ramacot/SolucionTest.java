@@ -4,12 +4,11 @@
  */
 package org.grupoia.main.tpdos.ptoa.ramacot;
 
+import org.grupoia.main.tpdos.common.NodoArbol;
 import org.grupoia.main.tpdos.ptoa.primero.PrimeroProfundidadSolucion;
 import org.grupoia.main.tpdos.ptoa.primero.PrimeroAnchuraSolucion;
 import org.grupoia.main.tpdos.common.Raiz;
-import org.grupoia.main.mockedobjects.MockedArbol;
-import org.grupoia.main.tpdos.common.Hoja;
-import org.grupoia.main.tpdos.common.NodoArbol;
+import org.grupoia.main.tpdos.mockedobjects.MockedArbol;
 import org.junit.Test;
 
 /**
@@ -20,7 +19,7 @@ public class SolucionTest extends BaseTest{
     
     @Test
     public void primeroAnchuraTest(){
-        Raiz raiz = MockedArbol.generaArbol();
+        Raiz raiz = org.grupoia.main.tpdos.mockedobjects.MockedArbol.generaArbol();
         this.testBuscaObjetivoValido(new PrimeroAnchuraSolucion(), raiz, MockedArbol.getNodoArbolValido());
         this.testBuscaObjetivoInvalido(new PrimeroAnchuraSolucion(), raiz, MockedArbol.getNodoArbolInvalido());
     }
@@ -34,6 +33,6 @@ public class SolucionTest extends BaseTest{
     }
     @Test
     public void primeroProdundidadCustomTest(){
-        this.testBuscaObjetivoValido(new PrimeroProfundidadSolucion(), MockedArbol.generaArbol(), new Hoja(1));
+        this.testBuscaObjetivoValido(new PrimeroProfundidadSolucion(), MockedArbol.generaArbol(), new NodoArbol(1));
     }
 }

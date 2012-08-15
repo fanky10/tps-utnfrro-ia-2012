@@ -54,6 +54,7 @@ public class NodoArbol {
             NodoArbol objetivo = (NodoArbol) object;
             return this.getValue() == objetivo.getValue();
         }
+        System.out.println("not even instance");
         return false;
     }
 

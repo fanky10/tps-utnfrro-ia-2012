@@ -13,7 +13,6 @@ package org.grupoia.main.tpdos.ptoa.primero.gui;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.grupoia.main.tpdos.common.Hoja;
 import org.grupoia.main.tpdos.common.NodoArbol;
 import org.grupoia.main.tpdos.mockedobjects.MockedArbol;
 import org.grupoia.main.tpdos.ptoa.primero.AlgoritmoSolucion;
@@ -41,8 +40,8 @@ public class DiagPrimero extends javax.swing.JDialog {
     }
 
     private void init() {
-        PrimeroProfundidadSolucion.DEBUG = false;
-        PrimeroAnchuraSolucion.DEBUG = false;
+        PrimeroProfundidadSolucion.DEBUG = true;
+        PrimeroAnchuraSolucion.DEBUG = true;
         dynamicTree = new MyDynamicTree(new DefaultMutableTreeNode(raiz));
         addNodos(dynamicTree);
         treePanel.add(dynamicTree);
@@ -110,7 +109,7 @@ public class DiagPrimero extends javax.swing.JDialog {
     private void buscarNodo() {
         try {
             Integer value = Integer.parseInt(txtNodo.getText());
-            NodoArbol objetivo = new Hoja(value);
+            NodoArbol objetivo = new NodoArbol(value);
             AlgoritmoSolucion solucion = null;
             if (rbAnchura.isSelected()) {
                 solucion = new PrimeroAnchuraSolucion();

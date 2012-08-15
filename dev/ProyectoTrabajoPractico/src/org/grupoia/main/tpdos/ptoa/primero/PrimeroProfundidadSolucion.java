@@ -31,28 +31,30 @@ public class PrimeroProfundidadSolucion extends AlgoritmoSolucion {
 
     @Override
     public NodoArbol buscarObjetivo(NodoArbol nodo, NodoArbol objetivo) {
-        debug("buscando nodo: "+objetivo);
-        if (!nodo.getNodosHijos().isEmpty()) {
-            if (nodo.equals(objetivo)) {
-                debug("encontrado: "+nodo);
-                return nodo;
-            }
-            visitedList.add(nodo);
-            for (NodoArbol na : nodo.getNodosHijos()) {
-                NodoArbol encontrado = buscarObjetivo(na, objetivo);
-                if(encontrado!=null){
-                    debug("encontrado: "+encontrado);
-                    return encontrado;
-                }
-            }
-        }
-        //si llegue hasta aca, es hoja o finalizo con los bichos
+        debug("evaluando nodo: "+nodo);
+        // primero me fijo si soy yo el elegido (jaja)
+        // luego me fijo los demas.
         visitedList.add(nodo);
         if (nodo.equals(objetivo)) {
             debug("encontrado: "+nodo);
             return nodo;
         }
-        debug("NO ENCONTRADO: nodo actual "+nodo);
+        if (!nodo.getNodosHijos().isEmpty()) {
+            for (NodoArbol na : nodo.getNodosHijos()) {
+                NodoArbol encontrado = buscarObjetivo(na, objetivo);
+                if(encontrado!=null){
+                    debug("child encontrado: "+encontrado);
+                    return encontrado;
+                }
+            }
+        }
+        //si llegue hasta aca, es hoja o finalizo con los bichos
+//        visitedList.add(nodo);
+//        if (nodo.equals(objetivo)) {
+//            debug("encontrado: "+nodo);
+//            return nodo;
+//        }
+//        debug("NO ENCONTRADO: nodo actual "+nodo);
         return null;
     }
     public static Boolean DEBUG = true;

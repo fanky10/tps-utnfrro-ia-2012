@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.grupoia.main.tpdos.common.Raiz;
 import org.grupoia.main.tpdos.common.NodoArbol;
+import org.grupoia.main.tpdos.common.NodoObjetivo;
 
 /**
  *
@@ -15,46 +16,33 @@ import org.grupoia.main.tpdos.common.NodoArbol;
  */
 public class MockedArbol {
     public static NodoArbol getNodoArbolValido(){
-        return new NodoArbol(30);
+        return new NodoObjetivo(30);
     }
     public static NodoArbol getNodoArbolInvalido(){
-        return new NodoArbol(3005);
+        return new NodoObjetivo(3005);
     }
     public static Raiz generaArbol() {
-        //todas las NodoArbols
-        List<NodoArbol> NodoArbolsIzq = new ArrayList<NodoArbol>();
-        NodoArbol h = new NodoArbol(1);
-        NodoArbolsIzq.add(h);
+        List<NodoArbol> rootChildren = new ArrayList<NodoArbol>();
         
-        //muchas hojitas (:
-        NodoArbolsIzq.add(new NodoArbol(110));
-        NodoArbolsIzq.add(new NodoArbol(101));
-        //una NodoArbol
-        NodoArbol na = new NodoArbol(210);
-        NodoArbolsIzq.add(na);
-        h = new NodoArbol(220);
-        na.addChild(h);
-        h.addChild(new NodoArbol(14));
+        NodoArbol rama = new NodoArbol(10);
+        NodoArbol ramaInner = new NodoArbol(211);
+        ramaInner.addChild(new NodoArbol(11));
+        rama.addChild(ramaInner);
+        ramaInner = new NodoArbol(212);
+        ramaInner.addChild(new NodoArbol(110));
+        rama.addChild(ramaInner);
+        ramaInner = new NodoArbol(213);
+        ramaInner.addChild(new NodoArbol(111));
+        rama.addChild(ramaInner);
+        rootChildren.add(rama);
         
+        rama = new NodoArbol(30);
+        rama.addChild(new NodoArbol(25));
+        rama.addChild(new NodoArbol(35));
+        rootChildren.add(rama);
         
-
-
-        List<NodoArbol> NodoArbolsDer = new ArrayList<NodoArbol>();
-        h = new NodoArbol(25);
-        NodoArbolsDer.add(h);
-        h = new NodoArbol(35);
-        NodoArbolsDer.add(h);
-
-        //NodoArbols primer nivel
-        List<NodoArbol> NodoArbols = new ArrayList<NodoArbol>();
-        NodoArbol rIzq = new NodoArbol(10, NodoArbolsIzq);
-        NodoArbols.add(rIzq);
-        NodoArbol rDer = new NodoArbol(30, NodoArbolsDer);
-        NodoArbols.add(rDer);
-        h = new NodoArbol(141);
-        NodoArbols.add(h);
-
-        //raiz
-        return new Raiz(NodoArbols);
+        rootChildren.add(new NodoArbol(241));  
+        
+        return new Raiz(rootChildren);
     }
 }

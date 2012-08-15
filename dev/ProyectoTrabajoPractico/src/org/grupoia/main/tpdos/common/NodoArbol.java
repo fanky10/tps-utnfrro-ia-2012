@@ -52,9 +52,8 @@ public class NodoArbol {
     public boolean equals(Object object) {
         if (object instanceof NodoArbol) {
             NodoArbol objetivo = (NodoArbol) object;
-            return this.getValue() == objetivo.getValue();
+            return this.getValue().equals(objetivo.getValue());
         }
-        System.out.println("not even instance");
         return false;
     }
 

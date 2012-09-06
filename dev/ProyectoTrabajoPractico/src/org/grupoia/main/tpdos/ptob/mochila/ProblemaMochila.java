@@ -19,7 +19,7 @@ public class ProblemaMochila {
 
     private List<Elemento> almacen = new ArrayList<Elemento>();
     private List<Elemento> mochila = new ArrayList<Elemento>();
-    private final double pesoMaximo;
+    private double pesoMaximo;
 
     public ProblemaMochila(int pm) {
         pesoMaximo = pm;
@@ -116,4 +116,13 @@ public class ProblemaMochila {
         }
         return result;
     }
+
+    public double getPesoMaximo() {
+        return pesoMaximo;
+    }
+
+    public void setPesoMaximo(double pesoMaximo) {
+        this.pesoMaximo = pesoMaximo;
+    }
+    
 }

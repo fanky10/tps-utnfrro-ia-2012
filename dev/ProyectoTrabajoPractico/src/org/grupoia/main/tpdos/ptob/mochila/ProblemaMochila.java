@@ -7,8 +7,9 @@ package org.grupoia.main.tpdos.ptob.mochila;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Vector;
+import java.util.Map;
 
 /**
  *
@@ -44,11 +45,13 @@ public class ProblemaMochila {
     public void mostrarMochila() {
         double pesoMochila = 0;
         double valorMochila = 0;
-        System.out.println();
-        for (Elemento e : mochila) {
-            System.out.println(e);
-            pesoMochila += e.getPeso();
-            valorMochila += e.getValor();
+        for (Elemento e : getElementosSeleccionados().keySet()) {
+            Boolean isSelected = getElementosSeleccionados().get(e);
+            System.out.println(e + " seleccionado:" + isSelected);
+            if (isSelected) {
+                pesoMochila += e.getPeso();
+                valorMochila += e.getValor();
+            }
         }
         System.out.println("------");
         System.out.printf("Peso  = %,12.2f %n", pesoMochila);
@@ -83,5 +86,34 @@ public class ProblemaMochila {
         ProblemaMochila pm = new ProblemaMochila(20);
         pm.resolverProblema();
         pm.mostrarMochila();
+    }
+
+    public List<Elemento> getAlmacen() {
+        return almacen;
+    }
+
+    public void setAlmacen(List<Elemento> almacen) {
+        this.almacen = almacen;
+    }
+
+    public List<Elemento> getMochila() {
+        return mochila;
+    }
+
+    public void setMochila(List<Elemento> mochila) {
+        this.mochila = mochila;
+    }
+
+    public Map<Elemento, Boolean> getElementosSeleccionados() {
+        Map<Elemento, Boolean> result = new LinkedHashMap<Elemento, Boolean>();
+        for (Elemento e : almacen) {
+            result.put(e, Boolean.FALSE);
+        }
+        for (Elemento e : mochila) {
+            if (result.containsKey(e)) {
+                result.put(e, Boolean.TRUE);
+            }
+        }
+        return result;
     }
 }

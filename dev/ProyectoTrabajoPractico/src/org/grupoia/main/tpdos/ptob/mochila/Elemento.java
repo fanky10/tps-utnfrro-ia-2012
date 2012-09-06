@@ -8,16 +8,16 @@ package org.grupoia.main.tpdos.ptob.mochila;
  *
  * @author Fanky10 <fanky10@gmail.com>
  */
-class Elemento {
+public class Elemento {
 
     private String nombre;
     private double valor;
     private double peso;
 
-    Elemento(String n, double v, double p) {
-        nombre = n;
-        valor = v;
-        peso = p;
+    public Elemento(String nombre, double valor, double peso) {
+        this.nombre = nombre;
+        this.peso = peso;
+        this.valor = valor;
     }
 
     @Override

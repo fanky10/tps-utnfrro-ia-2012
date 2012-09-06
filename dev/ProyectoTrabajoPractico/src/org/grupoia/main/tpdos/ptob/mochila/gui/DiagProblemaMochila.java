@@ -10,6 +10,7 @@
  */
 package org.grupoia.main.tpdos.ptob.mochila.gui;
 
+import java.util.ArrayList;
 import java.util.Map;
 import javax.swing.table.DefaultTableModel;
 import org.grupoia.main.tpdos.ptob.mochila.Elemento;
@@ -40,12 +41,18 @@ public class DiagProblemaMochila extends javax.swing.JDialog {
     private void refreshTbl(){
         DefaultTableModel tblModel = new DefaultTableModel(new String[]{"Objecto","Peso","Valor","Seleccionado"}, 0);
         Map<Elemento,Boolean> resultado = problemaMochila.getElementosSeleccionados();
+        java.util.List<Integer> selectedIndexes = new ArrayList<Integer>();
+        int idx = 0;
         for(Elemento key: resultado.keySet()){
             Boolean isSelected = resultado.get(key);
             tblModel.addRow(new Object[]{key.getNombre(),key.getPeso(),key.getValor(),isSelected});
+            if(isSelected){
+                selectedIndexes.add(idx);
+            }
+            idx++;
         }
         tblElementos.setModel(tblModel);
-        
+        tblElementos.setDefaultRenderer(Object.class, new MyColorCellRenderer(selectedIndexes));
     }
     private void agregarElemento(){
         Elemento e = new Elemento(txtNombre.getText(), Double.parseDouble(txtValor.getText()), Double.parseDouble(txtPeso.getText()));
